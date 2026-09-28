@@ -141,11 +141,9 @@ a:hover {
 /* --------------------------------------------------------------------------
    4. Hero / Banner Section
    -------------------------------------------------------------------------- */
-.hero-section {
-  padding: 4.5rem 0 3.5rem;
-  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
-  border-bottom: 1px solid var(--border-color);
-}
+
+.hero-section { padding-top: 7rem; }      /* clears the fixed navbar */
+.category-card { cursor: pointer; }
 
 .hero-tag {
   display: inline-flex;
@@ -869,24 +867,7 @@ a:hover {
   }
 }
 
-@media (max-width: 575.98px) {
-  .hero-title {
-    font-size: 1.65rem;
-  }
-
-  .btn-primary-custom,
-  .btn-outline-custom {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .carousel-slide-content {
-    padding: 1.75rem 1rem;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot { animation: none; }
+  html { scroll-behavior: auto; }
 }
