@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CampusConnect - Smart Campus Engagement & Event Management Platform for university students to discover, organize, and register for events.">
+  <title>CampusConnect — Find Your Place on Campus</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Custom Design System Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       PRACTICAL 01: HTML5 + CSS3 + BOOTSTRAP 5
+       ============================================================ -->
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg cc-navbar" id="mainNavbar">
+    <div class="container">
+      <a class="cc-brand" href="#home">
+        <div class="cc-brand-icon">
+          <i class="bi bi-mortarboard-fill"></i>
+        </div>
+        Campus<span>Connect</span>
+      </a>
+
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="bi bi-list fs-2 text-dark"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-1">
+          <li class="nav-item">
+            <a class="nav-link cc-nav-link active" href="#home"><i class="bi bi-house me-1"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link cc-nav-link" href="#events"><i class="bi bi-calendar-event me-1"></i> Events</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link cc-nav-link" href="#clubs"><i class="bi bi-people me-1"></i> Clubs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link cc-nav-link" href="#announcements"><i class="bi bi-megaphone me-1"></i> Announcements</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link cc-nav-link" href="#my-registrations"><i class="bi bi-ticket-perforated me-1"></i> My Registrations</a>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+          <a href="#register" class="btn btn-cc-outline"><i class="bi bi-pencil-square"></i> Register</a>
+          <a href="#events" class="btn btn-cc-teal"><i class="bi bi-compass"></i> Explore Events</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="cc-hero" id="home">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <!-- Left Side: Editorial Content -->
+        <div class="col-lg-6">
+          <div class="cc-eyebrow">Campus Life / 2026</div>
+          <h1 class="cc-hero-title">FIND YOUR PLACE<br>ON CAMPUS.</h1>
+          <p class="cc-hero-desc">
+            Discover upcoming events, student communities, technical workshops, and premier experiences happening across the university.
+          </p>
+          <div class="d-flex flex-wrap gap-3 mb-4">
+            <a href="#events" class="btn btn-cc-teal btn-lg"><i class="bi bi-compass"></i> Explore Events</a>
+            <a href="#clubs" class="btn btn-cc-navy btn-lg"><i class="bi bi-people"></i> Join a Community</a>
+          </div>
+          <div class="d-flex align-items-center gap-4 text-muted pt-2">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill text-success"></i>
+              <span class="small fw-semibold text-dark">Verified University Events</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-shield-check text-teal-primary" style="color: var(--cc-teal-primary);"></i>
+              <span class="small fw-semibold text-dark">Instant Registration</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Art-Directed Discovery Composition -->
+        <div class="col-lg-6">
+          <div class="hero-composition">
+            <!-- Large Featured Block in Hero -->
+            <div class="hero-featured-card">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <span class="cc-tag cc-tag-teal"><i class="bi bi-stars"></i> Featured Showcase</span>
+                <span class="cc-tag cc-tag-open"><i class="bi bi-dot"></i> Registration Open</span>
+              </div>
+              <div class="d-flex gap-3 align-items-start mb-3">
+                <div class="hero-date-badge">
+                  <div class="day">24</div>
+                  <div class="month">OCT</div>
+                </div>
+                <div>
+                  <span class="text-uppercase fw-bold small text-muted">Technology</span>
+                  <h3 class="fw-bold mb-1" style="font-size: 1.4rem;">TechSprint 2026</h3>
+                  <p class="small text-muted mb-0"><i class="bi bi-geo-alt me-1"></i> Innovation Lab, Tech Block</p>
+                </div>
+              </div>
+              <p class="small text-secondary mb-3">
+                24-hour university hackathon focused on building real-world software, AI systems, and hardware prototypes.
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="small fw-semibold text-dark">
+                  <i class="bi bi-people me-1 text-teal-primary"></i> 72 / 100 Seats Filled
+                </div>
+                <button type="button" class="btn btn-sm btn-cc-teal" data-bs-toggle="modal" data-bs-target="#eventModal1">
+                  View Event <i class="bi bi-arrow-right ms-1"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Smaller Supporting Events -->
+            <div class="row g-2">
+              <div class="col-sm-6">
+                <div class="hero-sub-card">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="badge bg-light text-dark border">28 OCT</span>
+                    <span class="small text-muted">Workshop</span>
+                  </div>
+                  <h6 class="fw-bold mb-1 text-truncate">Design Thinking Studio</h6>
+                  <p class="small text-muted mb-0"><i class="bi bi-clock me-1"></i> 10:00 AM</p>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="hero-sub-card">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="badge bg-light text-dark border">02 NOV</span>
+                    <span class="small text-muted">Cultural</span>
+                  </div>
+                  <h6 class="fw-bold mb-1 text-truncate">Campus Cultural Night</h6>
+                  <p class="small text-muted mb-0"><i class="bi bi-clock me-1"></i> 05:30 PM</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- STATISTICS SECTION -->
+  <section class="container py-5">
+    <div class="stats-banner">
+      <div class="row g-4 align-items-center">
+        <div class="col-6 col-lg-3">
+          <div class="stat-item">
+            <div class="stat-value">150+</div>
+            <div class="stat-label">Events This Semester</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="stat-item">
+            <div class="stat-value">32</div>
+            <div class="stat-label">Active Student Clubs</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="stat-item">
+            <div class="stat-value">4,800+</div>
+            <div class="stat-label">Student Registrations</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="stat-item">
+            <div class="stat-value">18</div>
+            <div class="stat-label">Events This Week</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED EVENTS SECTION -->
+  <section class="cc-section bg-white border-top border-bottom" id="featured">
+    <div class="container">
+      <div class="row mb-5 align-items-end">
+        <div class="col-md-8">
+          <div class="cc-eyebrow">Curated Selection</div>
+          <h2 class="cc-section-title">WHAT'S HAPPENING ON CAMPUS</h2>
+          <p class="cc-section-sub mb-0">A selection of flagship experiences and high-impact workshops worth showing up for.</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          <a href="#events" class="btn btn-cc-outline">View All Events <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Large Featured Card (8 Columns) -->
+        <div class="col-lg-8">
+          <div class="editorial-hero-box">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="cc-tag cc-tag-teal">Flagship Hackathon</span>
+                <span class="cc-tag cc-tag-open">Registration Open</span>
+              </div>
+              <div class="mb-3">
+                <span class="text-teal-accent text-uppercase fw-bold small" style="color: var(--cc-teal-accent);">Technology Department</span>
+                <h3 class="mt-1 mb-3">TechSprint 2026: The 24-Hour Innovation Marathon</h3>
+                <p>
+                  Join 100+ multidisciplinary students to design, develop, and pitch transformative software applications and smart engineering solutions under mentorship from industry leaders.
+                </p>
+              </div>
+            </div>
+            <div class="pt-4 border-top border-secondary border-opacity-25 d-flex flex-wrap justify-content-between align-items-center gap-3">
+              <div class="d-flex align-items-center gap-4 text-light small">
+                <div><i class="bi bi-calendar-check me-1 text-teal-accent" style="color: var(--cc-teal-accent);"></i> Oct 24, 2026</div>
+                <div><i class="bi bi-clock me-1 text-teal-accent" style="color: var(--cc-teal-accent);"></i> 09:00 AM</div>
+                <div><i class="bi bi-geo-alt me-1 text-teal-accent" style="color: var(--cc-teal-accent);"></i> Innovation Lab</div>
+              </div>
+              <button class="btn btn-cc-teal" data-bs-toggle="modal" data-bs-target="#eventModal1">
+                Explore Event <i class="bi bi-arrow-up-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Supporting Event Blocks (4 Columns) -->
+        <div class="col-lg-4 d-flex flex-column gap-4">
+          <div class="supporting-event-card">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="cc-tag cc-tag-upcoming">Workshop</span>
+              <span class="small fw-bold text-muted">28 OCT</span>
+            </div>
+            <h5 class="fw-bold mb-2">Design Thinking & Product UX</h5>
+            <p class="small text-muted mb-3">Learn user research and low-fidelity wireframing with Figma.</p>
+            <div class="d-flex justify-content-between align-items-center pt-2 border-top border-light">
+              <span class="small text-slate"><i class="bi bi-geo-alt me-1"></i> Studio B</span>
+              <a href="#register" class="btn btn-sm btn-cc-outline">Register</a>
+            </div>
+          </div>
+
+          <div class="supporting-event-card">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="cc-tag cc-tag-open">Cultural</span>
+              <span class="small fw-bold text-muted">02 NOV</span>
+            </div>
+            <h5 class="fw-bold mb-2">Annual Campus Cultural Gala</h5>
+            <p class="small text-muted mb-3">An evening of student band performances, theatre, and visual arts.</p>
+            <div class="d-flex justify-content-between align-items-center pt-2 border-top border-light">
+              <span class="small text-slate"><i class="bi bi-geo-alt me-1"></i> Open Air Amphitheatre</span>
+              <a href="#register" class="btn btn-sm btn-cc-outline">Register</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENT CATEGORIES -->
+  <section class="cc-section-sm bg-light border-bottom">
+    <div class="container">
+      <div class="row g-2 g-md-3">
+        <div class="col-6 col-md-3 col-lg">
+          <a href="#events" class="category-card active">
+            <div class="cat-icon"><i class="bi bi-cpu"></i></div>
+            <div class="cat-title">Technology</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-3 col-lg">
+          <a href="#events" class="category-card">
+            <div class="cat-icon"><i class="bi bi-tools"></i></div>
+            <div class="cat-title">Workshops</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-3 col-lg">
+          <a href="#events" class="category-card">
+            <div class="cat-icon"><i class="bi bi-music-note-beamed"></i></div>
+            <div class="cat-title">Cultural</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-3 col-lg">
+          <a href="#events" class="category-card">
+            <div class="cat-icon"><i class="bi bi-trophy"></i></div>
+            <div class="cat-title">Sports</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-3 col-lg">
+          <a href="#events" class="category-card">
+            <div class="cat-icon"><i class="bi bi-award"></i></div>
+            <div class="cat-title">Competitions</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-3 col-lg">
+          <a href="#events" class="category-card">
+            <div class="cat-icon"><i class="bi bi-people"></i></div>
+            <div class="cat-title">Clubs</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-3 col-lg">
+          <a href="#events" class="category-card">
+            <div class="cat-icon"><i class="bi bi-easel"></i></div>
+            <div class="cat-title">Seminars</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-3 col-lg">
+          <a href="#events" class="category-card">
+            <div class="cat-icon"><i class="bi bi-chat-square-heart"></i></div>
+            <div class="cat-title">Social</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="cc-section bg-white border-bottom">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="cc-eyebrow justify-content-center">Three Simple Steps</div>
+        <h2 class="cc-section-title">HOW CAMPUSCONNECT WORKS</h2>
+        <p class="cc-section-sub mx-auto">Get involved with university experiences in less than sixty seconds.</p>
+      </div>
+
+      <div class="row align-items-center g-4 text-center text-md-start">
+        <div class="col-md-3">
+          <div class="step-item">
+            <div class="step-num">01</div>
+            <div class="step-title">DISCOVER</div>
+            <div class="step-desc">Browse real-time college events, hackathons, seminars and department meetups.</div>
+          </div>
+        </div>
+        <div class="col-md-1 d-none d-md-flex step-divider">
+          <i class="bi bi-arrow-right"></i>
+        </div>
+        <div class="col-md-3">
+          <div class="step-item">
+            <div class="step-num">02</div>
+            <div class="step-title">REGISTER</div>
+            <div class="step-desc">Reserve your seat instantly with your student ID, receiving immediate verification.</div>
+          </div>
+        </div>
+        <div class="col-md-1 d-none d-md-flex step-divider">
+          <i class="bi bi-arrow-right"></i>
+        </div>
+        <div class="col-md-4">
+          <div class="step-item">
+            <div class="step-num">03</div>
+            <div class="step-title">PARTICIPATE</div>
+            <div class="step-desc">Show up on campus, expand your professional network, and claim certificates.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENT DISCOVERY SECTION (CATALOG) -->
+  <section class="cc-section" id="events">
+    <div class="container">
+      <div class="row mb-4 align-items-end">
+        <div class="col-lg-6">
+          <div class="cc-eyebrow">Event Directory</div>
+          <h2 class="cc-section-title">EXPLORE EVENTS</h2>
+          <p class="cc-section-sub mb-0">Search and filter campus activities by category, timeline, or department.</p>
+        </div>
+        <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
+          <span class="small fw-semibold text-muted">Showing verified university calendar</span>
+        </div>
+      </div>
+
+      <!-- Search & Filters Bar -->
+      <div class="filter-bar-container">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+              <input type="text" class="form-control form-control-custom border-start-0" placeholder="Search events, clubs, workshops...">
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="filter-btn-group justify-content-md-end">
+              <button class="filter-pill active">All</button>
+              <button class="filter-pill">Technology</button>
+              <button class="filter-pill">Workshop</button>
+              <button class="filter-pill">Cultural</button>
+              <button class="filter-pill">Sports</button>
+              <button class="filter-pill">Competition</button>
+              <button class="filter-pill">Seminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Events Grid -->
+      <div class="row g-4">
+        <!-- Event 1 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="cc-event-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="event-date-col">
+                  <span class="day">24</span>
+                  <span class="month">OCT</span>
+                </div>
+                <div>
+                  <span class="cc-tag cc-tag-teal mb-1">Technology</span>
+                  <div><span class="cc-tag cc-tag-open">Open</span></div>
+                </div>
+              </div>
+              <h5 class="fw-bold mb-2">TechSprint 2026 Hackathon</h5>
+              <p class="small text-muted mb-3">24-hour student hackathon focused on building useful software and hardware solutions.</p>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-geo-alt"></i> <span>Innovation Lab, Tech Block</span>
+              </div>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-clock"></i> <span>09:00 AM – 09:00 AM (+1 Day)</span>
+              </div>
+            </div>
+            <div>
+              <div class="capacity-indicator">
+                <span><i class="bi bi-people me-1"></i> Capacity: 100</span>
+                <span class="fw-bold text-teal-primary">28 seats left</span>
+              </div>
+              <div class="progress-mini">
+                <div class="progress-mini-bar" style="width: 72%;"></div>
+              </div>
+              <div class="d-flex gap-2 mt-3 pt-2">
+                <button class="btn btn-sm btn-cc-outline w-50" data-bs-toggle="modal" data-bs-target="#eventModal1">View</button>
+                <a href="#register" class="btn btn-sm btn-cc-teal w-50">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="cc-event-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="event-date-col">
+                  <span class="day">28</span>
+                  <span class="month">OCT</span>
+                </div>
+                <div>
+                  <span class="cc-tag cc-tag-teal mb-1">Workshop</span>
+                  <div><span class="cc-tag cc-tag-open">Open</span></div>
+                </div>
+              </div>
+              <h5 class="fw-bold mb-2">Design Thinking Workshop</h5>
+              <p class="small text-muted mb-3">Hands-on masterclass on human-centered design, rapid wireframing, and Figma prototyping.</p>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-geo-alt"></i> <span>Design Studio B, Annex</span>
+              </div>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-clock"></i> <span>10:00 AM – 01:30 PM</span>
+              </div>
+            </div>
+            <div>
+              <div class="capacity-indicator">
+                <span><i class="bi bi-people me-1"></i> Capacity: 60</span>
+                <span class="fw-bold text-teal-primary">15 seats left</span>
+              </div>
+              <div class="progress-mini">
+                <div class="progress-mini-bar" style="width: 75%;"></div>
+              </div>
+              <div class="d-flex gap-2 mt-3 pt-2">
+                <button class="btn btn-sm btn-cc-outline w-50" data-bs-toggle="modal" data-bs-target="#eventModalGeneric">View</button>
+                <a href="#register" class="btn btn-sm btn-cc-teal w-50">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="cc-event-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="event-date-col">
+                  <span class="day">02</span>
+                  <span class="month">NOV</span>
+                </div>
+                <div>
+                  <span class="cc-tag cc-tag-teal mb-1">Cultural</span>
+                  <div><span class="cc-tag cc-tag-open">Open</span></div>
+                </div>
+              </div>
+              <h5 class="fw-bold mb-2">Campus Cultural Gala</h5>
+              <p class="small text-muted mb-3">Grand celebration showcasing university musical bands, theatre plays, and choreographies.</p>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-geo-alt"></i> <span>Open Air Amphitheatre</span>
+              </div>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-clock"></i> <span>05:30 PM – 09:30 PM</span>
+              </div>
+            </div>
+            <div>
+              <div class="capacity-indicator">
+                <span><i class="bi bi-people me-1"></i> Capacity: 300</span>
+                <span class="fw-bold text-teal-primary">80 seats left</span>
+              </div>
+              <div class="progress-mini">
+                <div class="progress-mini-bar" style="width: 73%;"></div>
+              </div>
+              <div class="d-flex gap-2 mt-3 pt-2">
+                <button class="btn btn-sm btn-cc-outline w-50" data-bs-toggle="modal" data-bs-target="#eventModalGeneric">View</button>
+                <a href="#register" class="btn btn-sm btn-cc-teal w-50">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 4 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="cc-event-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="event-date-col">
+                  <span class="day">06</span>
+                  <span class="month">NOV</span>
+                </div>
+                <div>
+                  <span class="cc-tag cc-tag-teal mb-1">Sports</span>
+                  <div><span class="cc-tag cc-tag-open">Open</span></div>
+                </div>
+              </div>
+              <h5 class="fw-bold mb-2">Inter-College Volleyball Meet</h5>
+              <p class="small text-muted mb-3">Annual inter-collegiate tournament bringing together top university volleyball teams.</p>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-geo-alt"></i> <span>University Sports Arena</span>
+              </div>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-clock"></i> <span>08:30 AM – 04:00 PM</span>
+              </div>
+            </div>
+            <div>
+              <div class="capacity-indicator">
+                <span><i class="bi bi-people me-1"></i> Capacity: 150</span>
+                <span class="fw-bold text-teal-primary">40 seats left</span>
+              </div>
+              <div class="progress-mini">
+                <div class="progress-mini-bar" style="width: 73%;"></div>
+              </div>
+              <div class="d-flex gap-2 mt-3 pt-2">
+                <button class="btn btn-sm btn-cc-outline w-50" data-bs-toggle="modal" data-bs-target="#eventModalGeneric">View</button>
+                <a href="#register" class="btn btn-sm btn-cc-teal w-50">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 5 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="cc-event-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="event-date-col">
+                  <span class="day">10</span>
+                  <span class="month">NOV</span>
+                </div>
+                <div>
+                  <span class="cc-tag cc-tag-teal mb-1">Competition</span>
+                  <div><span class="cc-tag cc-tag-open">Open</span></div>
+                </div>
+              </div>
+              <h5 class="fw-bold mb-2">Startup Pitch Challenge</h5>
+              <p class="small text-muted mb-3">Pitch your venture ideas in front of angel investors and incubator directors.</p>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-geo-alt"></i> <span>Auditorium Hall 2</span>
+              </div>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-clock"></i> <span>02:00 PM – 06:00 PM</span>
+              </div>
+            </div>
+            <div>
+              <div class="capacity-indicator">
+                <span><i class="bi bi-people me-1"></i> Capacity: 80</span>
+                <span class="fw-bold text-teal-primary">22 seats left</span>
+              </div>
+              <div class="progress-mini">
+                <div class="progress-mini-bar" style="width: 72%;"></div>
+              </div>
+              <div class="d-flex gap-2 mt-3 pt-2">
+                <button class="btn btn-sm btn-cc-outline w-50" data-bs-toggle="modal" data-bs-target="#eventModalGeneric">View</button>
+                <a href="#register" class="btn btn-sm btn-cc-teal w-50">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 6 -->
+        <div class="col-md-6 col-lg-4">
+          <div class="cc-event-card">
+            <div>
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="event-date-col">
+                  <span class="day">14</span>
+                  <span class="month">NOV</span>
+                </div>
+                <div>
+                  <span class="cc-tag cc-tag-teal mb-1">Seminar</span>
+                  <div><span class="cc-tag cc-tag-upcoming">Upcoming</span></div>
+                </div>
+              </div>
+              <h5 class="fw-bold mb-2">Industry AI & Cloud Keynote</h5>
+              <p class="small text-muted mb-3">Keynote session featuring engineering leads on enterprise cloud architecture.</p>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-geo-alt"></i> <span>Central Auditorium</span>
+              </div>
+              <div class="event-meta-item mb-2">
+                <i class="bi bi-clock"></i> <span>11:00 AM – 01:00 PM</span>
+              </div>
+            </div>
+            <div>
+              <div class="capacity-indicator">
+                <span><i class="bi bi-people me-1"></i> Capacity: 250</span>
+                <span class="fw-bold text-teal-primary">95 seats left</span>
+              </div>
+              <div class="progress-mini">
+                <div class="progress-mini-bar" style="width: 62%;"></div>
+              </div>
+              <div class="d-flex gap-2 mt-3 pt-2">
+                <button class="btn btn-sm btn-cc-outline w-50" data-bs-toggle="modal" data-bs-target="#eventModalGeneric">View</button>
+                <a href="#register" class="btn btn-sm btn-cc-teal w-50">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLUBS SECTION (EDITORIAL GRID) -->
+  <section class="cc-section bg-white border-top border-bottom" id="clubs">
+    <div class="container">
+      <div class="row mb-5 align-items-end">
+        <div class="col-md-8">
+          <div class="cc-eyebrow">Student Communities</div>
+          <h2 class="cc-section-title">FIND YOUR COMMUNITY.</h2>
+          <p class="cc-section-sub mb-0">Meet fellow students who are building, creating, competing, and exploring together.</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          <a href="#register" class="btn btn-cc-outline">Join a Club <i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Featured Club Box -->
+        <div class="col-lg-5">
+          <div class="club-featured-box" style="background-color: var(--cc-bg-subtle);">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="cc-tag cc-tag-teal">Premier Club</span>
+              <span class="small fw-bold text-dark"><i class="bi bi-people-fill text-teal-primary"></i> 450+ Members</span>
+            </div>
+            <div class="mb-4">
+              <div class="cat-icon mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="bi bi-code-slash"></i></div>
+              <h3 class="fw-bold mb-2">Coding Club</h3>
+              <p class="text-secondary">
+                The hub for software engineering enthusiasts, competitive programmers, open-source contributors, and hackathon contenders across campus.
+              </p>
+            </div>
+            <div class="pt-3 border-top border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
+              <span class="small text-muted">Weekly Meetups • Every Wednesday</span>
+              <a href="#register" class="btn btn-sm btn-cc-navy">Join Club</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 Supporting Clubs Grid -->
+        <div class="col-lg-7">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="club-item-card">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <i class="bi bi-robot fs-4 text-teal-primary" style="color: var(--cc-teal-primary);"></i>
+                  <span class="badge bg-light text-dark border">180 Members</span>
+                </div>
+                <h6 class="fw-bold mb-1">Robotics Club</h6>
+                <p class="small text-muted mb-2">Autonomous bots, IoT systems, and drone engineering.</p>
+                <span class="small text-uppercase fw-bold text-teal-primary" style="font-size: 0.7rem;">Technology</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="club-item-card">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <i class="bi bi-camera fs-4 text-teal-primary" style="color: var(--cc-teal-primary);"></i>
+                  <span class="badge bg-light text-dark border">210 Members</span>
+                </div>
+                <h6 class="fw-bold mb-1">Photography Club</h6>
+                <p class="small text-muted mb-2">Visual storytelling, photowalks, and editorial shoots.</p>
+                <span class="small text-uppercase fw-bold text-teal-primary" style="font-size: 0.7rem;">Creative Arts</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="club-item-card">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <i class="bi bi-rocket-takeoff fs-4 text-teal-primary" style="color: var(--cc-teal-primary);"></i>
+                  <span class="badge bg-light text-dark border">140 Members</span>
+                </div>
+                <h6 class="fw-bold mb-1">E-Cell (Entrepreneurship)</h6>
+                <p class="small text-muted mb-2">Startup ideation, venture capital sessions, and incubators.</p>
+                <span class="small text-uppercase fw-bold text-teal-primary" style="font-size: 0.7rem;">Business</span>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="club-item-card">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <i class="bi bi-dribbble fs-4 text-teal-primary" style="color: var(--cc-teal-primary);"></i>
+                  <span class="badge bg-light text-dark border">320 Members</span>
+                </div>
+                <h6 class="fw-bold mb-1">Sports Club</h6>
+                <p class="small text-muted mb-2">Intramural leagues, fitness bootcamp, and university tournaments.</p>
+                <span class="small text-uppercase fw-bold text-teal-primary" style="font-size: 0.7rem;">Athletics</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANNOUNCEMENTS (EDITORIAL LIST) -->
+  <section class="cc-section" id="announcements">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-lg-6">
+          <div class="cc-eyebrow">Official Notices</div>
+          <h2 class="cc-section-title">ON CAMPUS</h2>
+          <p class="cc-section-sub">Real-time circulars, department deadlines, and club updates.</p>
+        </div>
+      </div>
+
+      <div class="bg-white border rounded p-4 p-md-5">
+        <!-- Notice 1 -->
+        <div class="announcement-row">
+          <div class="announcement-idx">01</div>
+          <div class="flex-grow-1">
+            <h5 class="announcement-title">TechSprint 2026 hackathon registrations are officially open</h5>
+            <div class="announcement-meta">
+              <span><i class="bi bi-tag me-1"></i> Technology Department</span>
+              <span><i class="bi bi-calendar3 me-1"></i> 24 September 2026</span>
+              <span class="badge bg-success-subtle text-success">Urgent</span>
+            </div>
+          </div>
+          <a href="#events" class="btn btn-sm btn-cc-outline d-none d-md-inline-block">Read Notice</a>
+        </div>
+
+        <!-- Notice 2 -->
+        <div class="announcement-row">
+          <div class="announcement-idx">02</div>
+          <div class="flex-grow-1">
+            <h5 class="announcement-title">Photography Club orientation and portfolio review this Friday</h5>
+            <div class="announcement-meta">
+              <span><i class="bi bi-tag me-1"></i> Photography Club</span>
+              <span><i class="bi bi-calendar3 me-1"></i> 22 September 2026</span>
+            </div>
+          </div>
+          <a href="#clubs" class="btn btn-sm btn-cc-outline d-none d-md-inline-block">Read Notice</a>
+        </div>
+
+        <!-- Notice 3 -->
+        <div class="announcement-row">
+          <div class="announcement-idx">03</div>
+          <div class="flex-grow-1">
+            <h5 class="announcement-title">Inter-college sports trials begin next week for athletics & volleyball</h5>
+            <div class="announcement-meta">
+              <span><i class="bi bi-tag me-1"></i> Sports Council</span>
+              <span><i class="bi bi-calendar3 me-1"></i> 20 September 2026</span>
+            </div>
+          </div>
+          <a href="#events" class="btn btn-sm btn-cc-outline d-none d-md-inline-block">Read Notice</a>
+        </div>
+
+        <!-- Notice 4 -->
+        <div class="announcement-row">
+          <div class="announcement-idx">04</div>
+          <div class="flex-grow-1">
+            <h5 class="announcement-title">Industry AI & Cloud keynote seats filling rapidly; verify your credentials</h5>
+            <div class="announcement-meta">
+              <span><i class="bi bi-tag me-1"></i> Dean of Academics</span>
+              <span><i class="bi bi-calendar3 me-1"></i> 18 September 2026</span>
+            </div>
+          </div>
+          <a href="#events" class="btn btn-sm btn-cc-outline d-none d-md-inline-block">Read Notice</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTRATION FORM SECTION -->
+  <section class="cc-section bg-light border-top border-bottom" id="register">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="text-center mb-5">
+            <div class="cc-eyebrow justify-content-center">Event Pass</div>
+            <h2 class="cc-section-title">REGISTER FOR AN EVENT</h2>
+            <p class="cc-section-sub mx-auto">Fill out your academic and contact details to receive your university event admission slip.</p>
+          </div>
+
+          <div class="reg-box">
+            <form id="practical1RegForm" novalidate>
+              <div class="row g-4">
+                <!-- Column 1: Personal Details -->
+                <div class="col-md-6 border-end-md pe-md-4">
+                  <h6 class="fw-bold mb-3 text-uppercase text-dark" style="letter-spacing: 0.05em;">
+                    <i class="bi bi-person-badge me-2 text-teal-primary"></i> 1. Personal Information
+                  </h6>
+
+                  <div class="mb-3">
+                    <label for="p1FullName" class="form-label form-label-custom">Student Full Name *</label>
+                    <input type="text" class="form-control form-control-custom" id="p1FullName" placeholder="e.g. Alex Morgan" required>
+                    <div class="invalid-feedback-custom">Please enter your full name.</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="p1Email" class="form-label form-label-custom">University Email *</label>
+                    <input type="email" class="form-control form-control-custom" id="p1Email" placeholder="student@university.edu" required>
+                    <div class="invalid-feedback-custom">Please enter a valid university email address.</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="p1Phone" class="form-label form-label-custom">Contact Phone (10-Digit) *</label>
+                    <input type="tel" class="form-control form-control-custom" id="p1Phone" placeholder="9876543210" pattern="[0-9]{10}" required>
+                    <div class="invalid-feedback-custom">Please enter a valid 10-digit mobile number.</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="p1StudentId" class="form-label form-label-custom">Student ID / PRN *</label>
+                    <input type="text" class="form-control form-control-custom" id="p1StudentId" placeholder="e.g. STU2024098" required>
+                    <div class="invalid-feedback-custom">Please enter your student ID.</div>
+                  </div>
+                </div>
+
+                <!-- Column 2: Event Details -->
+                <div class="col-md-6 ps-md-4">
+                  <h6 class="fw-bold mb-3 text-uppercase text-dark" style="letter-spacing: 0.05em;">
+                    <i class="bi bi-calendar2-check me-2 text-teal-primary"></i> 2. Academic & Event Selection
+                  </h6>
+
+                  <div class="mb-3">
+                    <label for="p1EventSelect" class="form-label form-label-custom">Select Target Event *</label>
+                    <select class="form-select form-select-custom" id="p1EventSelect" required>
+                      <option value="" selected disabled>-- Choose an Event --</option>
+                      <option value="EVT-1001">TechSprint 2026 Hackathon (24 Oct)</option>
+                      <option value="EVT-1002">Design Thinking Workshop (28 Oct)</option>
+                      <option value="EVT-1003">Campus Cultural Gala (02 Nov)</option>
+                      <option value="EVT-1004">Inter-College Volleyball Meet (06 Nov)</option>
+                      <option value="EVT-1005">Startup Pitch Challenge (10 Nov)</option>
+                      <option value="EVT-1006">Industry AI & Cloud Keynote (14 Nov)</option>
+                    </select>
+                    <div class="invalid-feedback-custom">Please select an event.</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="p1Dept" class="form-label form-label-custom">Department / Branch *</label>
+                    <select class="form-select form-select-custom" id="p1Dept" required>
+                      <option value="" selected disabled>-- Choose Department --</option>
+                      <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                      <option value="Information Technology">Information Technology</option>
+                      <option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+                      <option value="Mechanical Engineering">Mechanical Engineering</option>
+                      <option value="Business Administration">Business Administration</option>
+                    </select>
+                    <div class="invalid-feedback-custom">Please select your department.</div>
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="p1Year" class="form-label form-label-custom">Academic Year *</label>
+                    <select class="form-select form-select-custom" id="p1Year" required>
+                      <option value="1st Year">1st Year (Freshman)</option>
+                      <option value="2nd Year">2nd Year (Sophomore)</option>
+                      <option value="3rd Year" selected>3rd Year (Junior)</option>
+                      <option value="4th Year">4th Year (Senior)</option>
+                    </select>
+                  </div>
+
+                  <div class="p-3 bg-light rounded border mb-4">
+                    <div class="d-flex align-items-center gap-2 small text-muted">
+                      <i class="bi bi-info-circle text-teal-primary"></i>
+                      <span>Free university registration pass will be issued immediately upon submission.</span>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-cc-teal w-100 py-2">
+                    <i class="bi bi-check2-circle me-1"></i> Confirm Registration
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MY REGISTRATIONS PREVIEW SECTION -->
+  <section class="cc-section" id="my-registrations">
+    <div class="container">
+      <div class="row mb-4 align-items-end">
+        <div class="col-md-8">
+          <div class="cc-eyebrow">Student Portal</div>
+          <h2 class="cc-section-title">MY REGISTRATIONS</h2>
+          <p class="cc-section-sub mb-0">Manage your active event tickets, seat confirmations, and digital passes.</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          <span class="badge bg-light text-dark border p-2"><i class="bi bi-ticket-fill text-teal-primary me-1"></i> 2 Active Passes</span>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <!-- Item 1 -->
+          <div class="reg-timeline-item">
+            <div class="d-flex align-items-center gap-4">
+              <div class="event-date-col">
+                <span class="day">24</span>
+                <span class="month">OCT</span>
+              </div>
+              <div>
+                <span class="badge bg-success-subtle text-success border border-success-subtle mb-1">Registration Confirmed</span>
+                <h5 class="fw-bold mb-1">TechSprint 2026: 24-Hour Hackathon</h5>
+                <div class="small text-muted">
+                  <span><i class="bi bi-geo-alt me-1"></i> Innovation Lab</span> •
+                  <span class="ms-1"><i class="bi bi-qr-code me-1"></i> Pass ID: REG-1001</span>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-cc-outline" data-bs-toggle="modal" data-bs-target="#eventModal1">View Pass</button>
+              <button class="btn btn-sm btn-outline-danger" onclick="alert('Registration cancellation will be dynamically handled in Practical 02 & full-stack application.')">Cancel</button>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="reg-timeline-item">
+            <div class="d-flex align-items-center gap-4">
+              <div class="event-date-col">
+                <span class="day">28</span>
+                <span class="month">OCT</span>
+              </div>
+              <div>
+                <span class="badge bg-success-subtle text-success border border-success-subtle mb-1">Registration Confirmed</span>
+                <h5 class="fw-bold mb-1">Design Thinking & Product UX Workshop</h5>
+                <div class="small text-muted">
+                  <span><i class="bi bi-geo-alt me-1"></i> Design Studio B</span> •
+                  <span class="ms-1"><i class="bi bi-qr-code me-1"></i> Pass ID: REG-1002</span>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-cc-outline" data-bs-toggle="modal" data-bs-target="#eventModalGeneric">View Pass</button>
+              <button class="btn btn-sm btn-outline-danger" onclick="alert('Registration cancellation will be dynamically handled in Practical 02 & full-stack application.')">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="cc-footer">
+    <div class="container">
+      <div class="row g-4 justify-content-between">
+        <div class="col-lg-4">
+          <div class="footer-brand">
+            <i class="bi bi-mortarboard-fill me-2" style="color: var(--cc-teal-accent);"></i>Campus<span>Connect</span>
+          </div>
+          <div class="footer-tagline">"Find Your Place on Campus."</div>
+          <p class="small text-secondary">
+            Centralized engagement platform empowering students to discover events, lead clubs, participate in hackathons, and connect with academic communities.
+          </p>
+        </div>
+
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="footer-title">EXPLORE</div>
+          <ul class="footer-links">
+            <li><a href="#events">Upcoming Events</a></li>
+            <li><a href="#clubs">Student Clubs</a></li>
+            <li><a href="#announcements">Announcements</a></li>
+            <li><a href="#featured">Featured Showcases</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="footer-title">COMMUNITY</div>
+          <ul class="footer-links">
+            <li><a href="#register">Event Registration</a></li>
+            <li><a href="#my-registrations">My Passes</a></li>
+            <li><a href="#clubs">Coding Club</a></li>
+            <li><a href="#clubs">Robotics Society</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-4 col-lg-3">
+          <div class="footer-title">CAMPUS OFFICE</div>
+          <p class="small text-secondary mb-2">
+            <i class="bi bi-building me-2"></i> Student Affairs & Activities Building<br>
+            Room 204, Central Campus
+          </p>
+          <p class="small text-secondary mb-2">
+            <i class="bi bi-envelope me-2"></i> campusconnect@university.edu
+          </p>
+          <p class="small text-secondary">
+            <i class="bi bi-telephone me-2"></i> +1 (800) 555-CAMPUS
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 CampusConnect. Web Technology Practical No. 01 — HTML, CSS & Bootstrap 5.</div>
+        <div>Designed with Deep Navy + Ivory + Teal Identity.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL: EVENT DETAILS (TechSprint 2026) -->
+  <div class="modal fade" id="eventModal1" tabindex="-1" aria-labelledby="eventModal1Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <div class="d-flex align-items-center gap-2">
+            <span class="cc-tag cc-tag-teal">Technology</span>
+            <span class="cc-tag cc-tag-open">Registration Open</span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-custom">
+          <h3 class="fw-bold mb-2" id="eventModal1Label">TechSprint 2026: 24-Hour Student Hackathon</h3>
+          <p class="text-secondary mb-4">
+            TechSprint 2026 is our flagship university hackathon. Students collaborate in teams to solve real-world challenges across Web Development, Artificial Intelligence, Smart IoT, and Open Innovation. Mentors from top engineering organizations will guide participants.
+          </p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-sm-6 col-md-3">
+              <div class="p-3 bg-light rounded border text-center">
+                <div class="small text-muted text-uppercase fw-bold" style="font-size: 0.75rem;">Date</div>
+                <div class="fw-bold text-dark mt-1">24 Oct 2026</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="p-3 bg-light rounded border text-center">
+                <div class="small text-muted text-uppercase fw-bold" style="font-size: 0.75rem;">Time</div>
+                <div class="fw-bold text-dark mt-1">09:00 AM</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="p-3 bg-light rounded border text-center">
+                <div class="small text-muted text-uppercase fw-bold" style="font-size: 0.75rem;">Venue</div>
+                <div class="fw-bold text-dark mt-1">Innovation Lab</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="p-3 bg-light rounded border text-center">
+                <div class="small text-muted text-uppercase fw-bold" style="font-size: 0.75rem;">Available Seats</div>
+                <div class="fw-bold text-teal-primary mt-1" style="color: var(--cc-teal-primary);">28 / 100</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3 bg-light rounded border mb-0">
+            <h6 class="fw-bold mb-2">Participant Requirements:</h6>
+            <ul class="small text-secondary mb-0 ps-3">
+              <li>Valid University Student ID Card is mandatory for entry.</li>
+              <li>Bring your own laptop, chargers, and development kits.</li>
+              <li>Free meals, snacks, and official certificates will be provided.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer modal-footer-custom">
+          <button type="button" class="btn btn-cc-outline" data-bs-dismiss="modal">Close</button>
+          <a href="#register" class="btn btn-cc-teal" data-bs-dismiss="modal">Register Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GENERIC EVENT DETAILS -->
+  <div class="modal fade" id="eventModalGeneric" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <div class="d-flex align-items-center gap-2">
+            <span class="cc-tag cc-tag-teal">Campus Activity</span>
+            <span class="cc-tag cc-tag-open">Verified Event</span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-custom">
+          <h3 class="fw-bold mb-2">Event Information & Guidelines</h3>
+          <p class="text-secondary mb-4">
+            Join your peers and faculty mentors for this structured interactive campus session. Make sure to reserve your seat in advance as capacities are strictly regulated.
+          </p>
+          <div class="alert alert-info border-0 rounded" style="background-color: var(--cc-teal-light); color: var(--cc-teal-dark);">
+            <i class="bi bi-info-circle-fill me-2"></i> Registration is free for all currently enrolled undergraduate and graduate students.
+          </div>
+        </div>
+        <div class="modal-footer modal-footer-custom">
+          <button type="button" class="btn btn-cc-outline" data-bs-dismiss="modal">Close</button>
+          <a href="#register" class="btn btn-cc-teal" data-bs-dismiss="modal">Proceed to Register</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "campusconnect-node",
+  "version": "1.0.0",
+  "description": "CampusConnect - Practical 04 Native Node.js HTTP Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["nodejs", "native-http", "web-technology"],
+  "author": "CampusConnect Team",
+  "license": "ISC"
+}

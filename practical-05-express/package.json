@@ -1,0 +1,14 @@
+{
+  "name": "campusconnect-express",
+  "version": "1.0.0",
+  "description": "CampusConnect - Practical 05 Express.js REST API Architecture",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

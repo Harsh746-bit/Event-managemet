@@ -1,0 +1,28 @@
+[
+  {
+    "id": "REG-1042",
+    "eventId": "EVT-1001",
+    "eventTitle": "TechSprint 2026",
+    "studentName": "Alex Morgan",
+    "email": "alex.morgan@university.edu",
+    "phone": "9876543210",
+    "studentId": "STU2024001",
+    "department": "Computer Science & Engineering",
+    "year": "3rd Year",
+    "date": "2026-10-24",
+    "timestamp": "2026-09-28T10:00:00.000Z"
+  },
+  {
+    "id": "REG-1043",
+    "eventId": "EVT-1002",
+    "eventTitle": "Design Thinking Workshop",
+    "studentName": "Alex Morgan",
+    "email": "alex.morgan@university.edu",
+    "phone": "9876543210",
+    "studentId": "STU2024001",
+    "department": "Computer Science & Engineering",
+    "year": "3rd Year",
+    "date": "2026-10-28",
+    "timestamp": "2026-09-28T10:15:00.000Z"
+  }
+]
