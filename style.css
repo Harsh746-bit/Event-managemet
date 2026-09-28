@@ -1,0 +1,892 @@
+/* ==========================================================================
+   CampusConnect — College Event Planner
+   Practical No. 1: HTML, CSS & Bootstrap 5
+   Visual Design System & Custom Overrides (Aligned with DESIGN.md)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Variables & Theme Configuration
+   -------------------------------------------------------------------------- */
+:root {
+  /* Primary & Accent Palette (DESIGN.md §5) */
+  --primary-indigo: #312e81;       /* Deep Campus Indigo */
+  --primary-indigo-hover: #1e1b4b; /* Darker Indigo for active/hover */
+  --primary-indigo-light: #e0e7ff; /* Soft indigo tint */
+  --accent-amber: #d97706;         /* Warm amber highlight */
+  --accent-amber-light: #fef3c7;   /* Amber tint */
+  --accent-amber-text: #92400e;    /* Deep amber text */
+
+  /* Neutral Surfaces & Text */
+  --bg-canvas: #f8fafc;            /* Warm off-white / light slate canvas */
+  --surface-white: #ffffff;        /* Pure white cards/modals */
+  --surface-elevated: #f1f5f9;     /* Subtle section contrast */
+  --text-main: #0f172a;            /* Deep charcoal text */
+  --text-muted: #64748b;           /* Cool gray secondary text */
+  --border-color: #e2e8f0;         /* Restrained borders */
+  --border-focus: #818cf8;         /* Focus state indigo ring */
+
+  /* Category Badges */
+  --badge-tech-bg: #e0e7ff;
+  --badge-tech-text: #3730a3;
+  --badge-cultural-bg: #fce7f3;
+  --badge-cultural-text: #9d174d;
+  --badge-sports-bg: #dcfce7;
+  --badge-sports-text: #166534;
+  --badge-clubs-bg: #fef3c7;
+  --badge-clubs-text: #92400e;
+
+  /* Typography (DESIGN.md §7) */
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Spacing & Radii (DESIGN.md §8 & §9) */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+  --transition-fast: 0.2s ease-in-out;
+}
+
+/* --------------------------------------------------------------------------
+   2. Global Resets & Base Styles
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Offset for fixed navbar */
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-main);
+  background-color: var(--bg-canvas);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-main);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+p {
+  color: var(--text-muted);
+}
+
+a {
+  color: var(--primary-indigo);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--primary-indigo-hover);
+}
+
+/* --------------------------------------------------------------------------
+   3. Custom Header & Navigation
+   -------------------------------------------------------------------------- */
+.navbar-custom {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.85rem 0;
+  transition: background-color var(--transition-fast);
+}
+
+.navbar-brand {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--primary-indigo) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-brand .brand-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: var(--primary-indigo-light);
+  color: var(--primary-indigo);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-pill);
+}
+
+.nav-link {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-main) !important;
+  padding: 0.5rem 0.9rem !important;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link:focus,
+.nav-link.active {
+  color: var(--primary-indigo) !important;
+  background-color: var(--primary-indigo-light);
+}
+
+/* --------------------------------------------------------------------------
+   4. Hero / Banner Section
+   -------------------------------------------------------------------------- */
+.hero-section {
+  padding: 4.5rem 0 3.5rem;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-amber-text);
+  background-color: var(--accent-amber-light);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-size: 2.75rem;
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+}
+
+.hero-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  max-width: 540px;
+  margin-bottom: 2rem;
+}
+
+/* Hero Right Editorial Visual Card */
+.hero-visual-card {
+  background-color: var(--surface-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+}
+
+.pulse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.pulse-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #15803d;
+  background-color: #dcfce7;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #16a34a;
+  border-radius: 50%;
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.pulse-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-canvas);
+  margin-bottom: 0.75rem;
+}
+
+.pulse-item:last-child {
+  margin-bottom: 0;
+}
+
+.pulse-icon-box {
+  width: 36px;
+  height: 36px;
+  background-color: var(--primary-indigo-light);
+  color: var(--primary-indigo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. Buttons & Interactive Controls
+   -------------------------------------------------------------------------- */
+.btn-primary-custom {
+  background-color: var(--primary-indigo);
+  border-color: var(--primary-indigo);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary-custom:hover,
+.btn-primary-custom:focus {
+  background-color: var(--primary-indigo-hover);
+  border-color: var(--primary-indigo-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-outline-custom {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-outline-custom:hover {
+  background-color: var(--surface-elevated);
+  border-color: var(--text-muted);
+  color: var(--text-main);
+}
+
+/* --------------------------------------------------------------------------
+   6. Section Headers (Consistent Editorial Style)
+   -------------------------------------------------------------------------- */
+.section-wrapper {
+  padding: 4.5rem 0;
+}
+
+.section-wrapper.bg-alt {
+  background-color: var(--surface-elevated);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-header {
+  margin-bottom: 2.75rem;
+}
+
+.section-tag {
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--primary-indigo);
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-desc {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 620px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Upcoming Events Card Grid
+   -------------------------------------------------------------------------- */
+.event-card {
+  background-color: var(--surface-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px -6px rgba(15, 23, 42, 0.08);
+  border-color: #cbd5e1;
+}
+
+.event-card-header {
+  padding: 1.25rem 1.25rem 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.event-date-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-indigo-light);
+  color: var(--primary-indigo);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.65rem;
+  min-width: 52px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.event-date-day {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.event-date-month {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.event-card-body {
+  padding: 0.75rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.event-title {
+  font-size: 1.2rem;
+  margin: 0.5rem 0 0.6rem;
+  color: var(--text-main);
+}
+
+.event-description {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.event-metadata {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-top: 1px dashed var(--border-color);
+  padding-top: 0.85rem;
+}
+
+.event-metadata li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.event-metadata li:last-child {
+  margin-bottom: 0;
+}
+
+.event-metadata i {
+  color: var(--primary-indigo);
+  width: 16px;
+}
+
+/* Category Badges */
+.badge-category {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+}
+
+.badge-tech {
+  background-color: var(--badge-tech-bg);
+  color: var(--badge-tech-text);
+}
+
+.badge-cultural {
+  background-color: var(--badge-cultural-bg);
+  color: var(--badge-cultural-text);
+}
+
+.badge-sports {
+  background-color: var(--badge-sports-bg);
+  color: var(--badge-sports-text);
+}
+
+.badge-clubs {
+  background-color: var(--badge-clubs-bg);
+  color: var(--badge-clubs-text);
+}
+
+/* --------------------------------------------------------------------------
+   8. Event Categories Grid
+   -------------------------------------------------------------------------- */
+.category-card {
+  background-color: var(--surface-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  height: 100%;
+  transition: all var(--transition-fast);
+}
+
+.category-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary-indigo);
+  box-shadow: 0 10px 18px -4px rgba(15, 23, 42, 0.06);
+}
+
+.category-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.category-card.tech .category-icon-wrapper {
+  background-color: var(--badge-tech-bg);
+  color: var(--badge-tech-text);
+}
+
+.category-card.cultural .category-icon-wrapper {
+  background-color: var(--badge-cultural-bg);
+  color: var(--badge-cultural-text);
+}
+
+.category-card.sports .category-icon-wrapper {
+  background-color: var(--badge-sports-bg);
+  color: var(--badge-sports-text);
+}
+
+.category-card.clubs .category-icon-wrapper {
+  background-color: var(--badge-clubs-bg);
+  color: var(--badge-clubs-text);
+}
+
+.category-title {
+  font-size: 1.15rem;
+  margin-bottom: 0.4rem;
+}
+
+.category-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   9. Campus Highlights Carousel
+   -------------------------------------------------------------------------- */
+.highlights-carousel {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 12px 25px -6px rgba(15, 23, 42, 0.12);
+  border: 1px solid var(--border-color);
+}
+
+.carousel-slide-content {
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  padding: 3.5rem 4rem;
+  color: #ffffff;
+  position: relative;
+}
+
+.slide-bg-1 {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%);
+}
+
+.slide-bg-2 {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #334155 100%);
+}
+
+.slide-bg-3 {
+  background: linear-gradient(135deg, #1e293b 0%, #065f46 60%, #047857 100%);
+}
+
+.slide-text-box {
+  max-width: 600px;
+  position: relative;
+  z-index: 2;
+}
+
+.slide-pill {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.85rem;
+}
+
+.slide-title {
+  color: #ffffff;
+  font-size: 2.25rem;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+}
+
+.slide-desc {
+  color: #cbd5e1;
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}
+
+.carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 5px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.carousel-indicators .active {
+  background-color: #ffffff;
+  width: 24px;
+  border-radius: var(--radius-pill);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 8%;
+  opacity: 0.7;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   10. About Section
+   -------------------------------------------------------------------------- */
+.about-card {
+  background-color: var(--surface-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+}
+
+.feature-point {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.feature-point:last-child {
+  margin-bottom: 0;
+}
+
+.feature-icon-badge {
+  width: 44px;
+  height: 44px;
+  background-color: var(--primary-indigo-light);
+  color: var(--primary-indigo);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.feature-point h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.feature-point p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   11. Bootstrap Modal Overrides & Registration Form
+   -------------------------------------------------------------------------- */
+.modal-content {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary-indigo);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.form-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+
+.form-control,
+.form-select {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--primary-indigo-light);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 1rem 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   12. Footer
+   -------------------------------------------------------------------------- */
+.footer-custom {
+  background-color: #0f172a;
+  color: #cbd5e1;
+  padding: 4rem 0 2rem;
+  border-top: 1px solid #1e293b;
+}
+
+.footer-brand {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.footer-desc {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  max-width: 320px;
+}
+
+.footer-heading {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-links a {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: #94a3b8;
+  margin-bottom: 0.65rem;
+}
+
+.footer-contact-item i {
+  color: #818cf8;
+  font-size: 1rem;
+  margin-top: 0.15rem;
+}
+
+.footer-social-links {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.footer-social-icon {
+  width: 36px;
+  height: 36px;
+  background-color: #1e293b;
+  color: #cbd5e1;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+
+.footer-social-icon:hover {
+  background-color: var(--primary-indigo);
+  color: #ffffff;
+}
+
+.footer-bottom {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #1e293b;
+  font-size: 0.82rem;
+  color: #64748b;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   13. Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .carousel-slide-content {
+    padding: 2.5rem 2rem;
+    min-height: 340px;
+  }
+  
+  .slide-title {
+    font-size: 1.75rem;
+  }
+
+  .about-card {
+    padding: 1.75rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .hero-section {
+    padding: 3rem 0 2.5rem;
+  }
+
+  .hero-title {
+    font-size: 1.9rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .section-wrapper {
+    padding: 3.25rem 0;
+  }
+
+  .section-title {
+    font-size: 1.65rem;
+  }
+
+  .carousel-slide-content {
+    padding: 2rem 1.5rem;
+    min-height: 320px;
+  }
+
+  .slide-title {
+    font-size: 1.5rem;
+  }
+
+  .slide-desc {
+    font-size: 0.95rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .hero-title {
+    font-size: 1.65rem;
+  }
+
+  .btn-primary-custom,
+  .btn-outline-custom {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .carousel-slide-content {
+    padding: 1.75rem 1rem;
+  }
+}
