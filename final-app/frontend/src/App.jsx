@@ -12,6 +12,8 @@ import RegistrationCard from './components/RegistrationCard';
 import EventModal from './components/EventModal';
 import ConfirmationModal from './components/ConfirmationModal';
 import CancelConfirmationModal from './components/CancelConfirmationModal';
+import EventFormModal from './components/EventFormModal';
+import DeleteEventModal from './components/DeleteEventModal';
 import ToastAlert from './components/ToastAlert';
 import Footer from './components/Footer';
 
@@ -27,6 +29,7 @@ export default function App() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [dbConnected, setDbConnected] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
@@ -36,6 +39,12 @@ export default function App() {
   const [activeModalEventId, setActiveModalEventId] = useState(null);
   const [confirmedRegistration, setConfirmedRegistration] = useState(null);
   const [registrationToCancel, setRegistrationToCancel] = useState(null);
+  
+  // Event CRUD Modals State
+  const [isEventFormOpen, setIsEventFormOpen] = useState(false);
+  const [eventToEdit, setEventToEdit] = useState(null);
+  const [eventToDelete, setEventToDelete] = useState(null);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [serverError, setServerError] = useState(null);
@@ -55,15 +64,22 @@ export default function App() {
     }
   }, []);
 
-  // Fetch Registrations & Stats from API
+  // Fetch Registrations, Stats & Health from API
   const loadRegistrationsAndStats = useCallback(async () => {
     try {
-      const [regs, stats] = await Promise.all([
+      const [regs, stats, health] = await Promise.allSettled([
         apiService.getRegistrations(),
-        apiService.getStatistics()
+        apiService.getStatistics(),
+        apiService.getHealth()
       ]);
-      setRegistrations(regs);
-      setStatistics(stats);
+
+      if (regs.status === 'fulfilled') setRegistrations(regs.value);
+      if (stats.status === 'fulfilled') setStatistics(stats.value);
+      if (health.status === 'fulfilled' && health.value?.database?.status === 'connected') {
+        setDbConnected(true);
+      } else {
+        setDbConnected(false);
+      }
     } catch (err) {
       console.warn('Could not fetch registrations/statistics:', err.message);
     }
@@ -96,6 +112,43 @@ export default function App() {
     }
   };
 
+  // Event CRUD Triggers
+  const handleOpenCreateEvent = () => {
+    setEventToEdit(null);
+    setIsEventFormOpen(true);
+  };
+
+  const handleOpenEditEvent = (evt) => {
+    setEventToEdit(evt);
+    setIsEventFormOpen(true);
+  };
+
+  const handleOpenDeleteEvent = (evt) => {
+    setEventToDelete(evt);
+  };
+
+  const handleEventSaved = (savedResult, isEdit) => {
+    setToast({
+      type: 'success',
+      title: isEdit ? 'Event Updated (PUT)' : 'Event Created (POST)',
+      message: isEdit
+        ? `"${savedResult.data?.title}" updated successfully in MongoDB.`
+        : `"${savedResult.data?.title}" created successfully with ID ${savedResult.data?.id}.`
+    });
+    loadEvents(activeCategory, searchQuery);
+    loadRegistrationsAndStats();
+  };
+
+  const handleEventDeleted = (deletedEvent) => {
+    setToast({
+      type: 'success',
+      title: 'Event Deleted (DELETE)',
+      message: `Event "${deletedEvent.title}" (${deletedEvent.id}) and linked passes deleted from MongoDB.`
+    });
+    loadEvents(activeCategory, searchQuery);
+    loadRegistrationsAndStats();
+  };
+
   // Create Registration Handler
   const handleRegisterSubmit = async (formData) => {
     setIsSubmitting(true);
@@ -108,7 +161,7 @@ export default function App() {
       setConfirmedRegistration(newRegistration);
       setToast({
         type: 'success',
-        title: 'Registration Confirmed',
+        title: 'Registration Confirmed (POST)',
         message: `Pass ID ${newRegistration.id} generated for ${newRegistration.eventTitle}.`
       });
 
@@ -138,8 +191,8 @@ export default function App() {
       await apiService.cancelRegistration(registrationToCancel.id);
       setToast({
         type: 'success',
-        title: 'Pass Cancelled',
-        message: `Event pass ${registrationToCancel.id} was successfully cancelled and seat released.`
+        title: 'Pass Cancelled (DELETE)',
+        message: `Event pass ${registrationToCancel.id} cancelled. Seat released back to MongoDB.`
       });
       setRegistrationToCancel(null);
 
@@ -157,11 +210,11 @@ export default function App() {
     }
   };
 
-  const activeEventForModal = events.find(e => e.id === activeModalEventId);
+  const activeEventForModal = events.find(e => (e.id === activeModalEventId || e._id === activeModalEventId));
 
   return (
     <div>
-      <Navbar activePassCount={registrations.length} />
+      <Navbar activePassCount={registrations.length} dbConnected={dbConnected} />
 
       <Hero onOpenModal={(id) => setActiveModalEventId(id)} />
 
@@ -189,6 +242,9 @@ export default function App() {
         onResetFilters={handleResetFilters}
         onOpenModal={(id) => setActiveModalEventId(id)}
         onSelectEvent={handleSelectEventForRegistration}
+        onCreateEvent={handleOpenCreateEvent}
+        onEditEvent={handleOpenEditEvent}
+        onDeleteEvent={handleOpenDeleteEvent}
         onRetry={() => {
           loadEvents(activeCategory, searchQuery);
           loadRegistrationsAndStats();
@@ -235,7 +291,7 @@ export default function App() {
             <div>
               {registrations.map(reg => (
                 <RegistrationCard
-                  key={reg.id}
+                  key={reg.id || reg._id}
                   registration={reg}
                   onCancelClick={(item) => setRegistrationToCancel(item)}
                   onViewPass={(item) => setConfirmedRegistration(item)}
@@ -253,6 +309,22 @@ export default function App() {
         event={activeEventForModal}
         onClose={() => setActiveModalEventId(null)}
         onRegister={handleSelectEventForRegistration}
+        onEdit={handleOpenEditEvent}
+        onDelete={handleOpenDeleteEvent}
+      />
+
+      <EventFormModal
+        isOpen={isEventFormOpen}
+        event={eventToEdit}
+        onClose={() => setIsEventFormOpen(false)}
+        onSaved={handleEventSaved}
+      />
+
+      <DeleteEventModal
+        isOpen={Boolean(eventToDelete)}
+        event={eventToDelete}
+        onClose={() => setEventToDelete(null)}
+        onDeleted={handleEventDeleted}
       />
 
       <ConfirmationModal

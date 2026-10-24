@@ -1,0 +1,667 @@
+{
+  "info": {
+    "_postman_id": "a93e3d92-124b-4a5c-89a1-778899aabbcc",
+    "name": "CampusConnect - Practical 6 & 7 RESTful API & MongoDB",
+    "description": "Comprehensive Postman test collection for CampusConnect Event Management Platform.\nCovers Practical 6 (RESTful CRUD operations, HTTP status codes, validation) and Practical 7 (MongoDB Mongoose integration, real-time persistence, and aggregation).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "createdEventId",
+      "value": "EVT-PM-901",
+      "type": "string"
+    },
+    {
+      "key": "createdPassId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Diagnostics & Health",
+      "item": [
+        {
+          "name": "1. Health Check & MongoDB State",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Verifies that the Express server is up and MongoDB is connected."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Server is healthy and MongoDB is connected\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql(\"healthy\");",
+                  "    pm.expect(json.database.status).to.eql(\"connected\");",
+                  "    pm.expect(json.database.type).to.eql(\"MongoDB\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02. Events (Practical 6 REST CRUD)",
+      "item": [
+        {
+          "name": "1. GET All Events (Read All)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["events"]
+            },
+            "description": "Retrieve all campus events from MongoDB collection 'events'."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response has success flag and event array\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.be.an(\"array\");",
+                  "    pm.expect(json.count).to.be.at.least(1);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. GET Filter Events by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events?category=Technology",
+              "host": ["{{baseUrl}}"],
+              "path": ["events"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Technology"
+                }
+              ]
+            },
+            "description": "Filter events dynamically by category."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"All returned events match Technology category\", function () {",
+                  "    var json = pm.response.json();",
+                  "    json.data.forEach(function(item) {",
+                  "        pm.expect(item.category.toLowerCase()).to.eql(\"technology\");",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. GET Search Events by Keyword",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events?search=Sprint",
+              "host": ["{{baseUrl}}"],
+              "path": ["events"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Sprint"
+                }
+              ]
+            },
+            "description": "Full text regex search across title, description, and venue."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. GET Event by ID (Read Single)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events/EVT-1001",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "EVT-1001"]
+            },
+            "description": "Retrieve specific event by its ID."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Returns EVT-1001 data structure\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.data.id).to.eql(\"EVT-1001\");",
+                  "    pm.expect(json.data).to.have.property(\"capacity\");",
+                  "    pm.expect(json.data).to.have.property(\"registered\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "5. POST Create Event (Create)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{createdEventId}}\",\n  \"title\": \"Full-Stack Cloud & DevOps Summit 2026\",\n  \"category\": \"Technology\",\n  \"date\": \"2026-11-28\",\n  \"time\": \"10:00 AM\",\n  \"location\": \"Innovation Hall Alpha\",\n  \"capacity\": 75,\n  \"description\": \"In-depth practical session on building cloud-native REST APIs and MongoDB Atlas deployment pipelines.\",\n  \"department\": \"Computer Engineering\",\n  \"status\": \"Registration Open\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["events"]
+            },
+            "description": "Create a new event record in MongoDB with status 201 Created."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Event was successfully created in MongoDB\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.id).to.eql(pm.collectionVariables.get(\"createdEventId\"));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "6. PUT Update Event (Update)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Full-Stack Cloud & DevOps Summit 2026 (Updated Venue)\",\n  \"capacity\": 90,\n  \"location\": \"Main University Auditorium\",\n  \"time\": \"11:00 AM\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events/{{createdEventId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "{{createdEventId}}"]
+            },
+            "description": "Update an existing event in MongoDB with status 200 OK."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Event was updated in MongoDB\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.data.capacity).to.eql(90);",
+                  "    pm.expect(json.data.location).to.eql(\"Main University Auditorium\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "7. DELETE Event (Delete)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events/{{createdEventId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "{{createdEventId}}"]
+            },
+            "description": "Delete the newly created test event from MongoDB."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response confirms deletion\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.id).to.eql(pm.collectionVariables.get(\"createdEventId\"));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "8. Negative Test: Retrieve Nonexistent Event (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events/EVT-NONEXISTENT-9999",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "EVT-NONEXISTENT-9999"]
+            },
+            "description": "Verify proper 404 response for nonexistent event ID."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404 Not Found\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test(\"Returns error message in JSON\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.message).to.include(\"not found\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "9. Negative Test: Validation Failure on Bad Payload (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"X\",\n  \"category\": \"InvalidCategoryName\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["events"]
+            },
+            "description": "Submits invalid payload to test server-side validation middleware."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Response identifies validation error\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.false;",
+                  "    pm.expect(json.message).to.include(\"Validation Error\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "10. Negative Test: Invalid ID Parameter Format (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/events/invalid%20param%20%24%24",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "invalid param $$"]
+            },
+            "description": "Verify rejection of malformed ID parameter."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03. Registrations (Practical 6 & 7)",
+      "item": [
+        {
+          "name": "1. GET All Registrations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/registrations",
+              "host": ["{{baseUrl}}"],
+              "path": ["registrations"]
+            },
+            "description": "Retrieve all registration passes from MongoDB collection 'registrations'."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Registrations array returned\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data).to.be.an(\"array\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. POST Create Registration Pass (Reserve Seat)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Postman Test Student\",\n  \"email\": \"postman.tester@university.edu\",\n  \"phone\": \"9876543210\",\n  \"studentId\": \"PRN-POSTMAN-2026\",\n  \"eventId\": \"EVT-1001\",\n  \"department\": \"Computer Science & Engineering\",\n  \"year\": \"3rd Year\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/registrations",
+              "host": ["{{baseUrl}}"],
+              "path": ["registrations"]
+            },
+            "description": "Registers student, reserves seat in MongoDB, and generates unique Pass ID."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Pass ID generated and returned\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.data.id).to.include(\"REG-\");",
+                  "    pm.collectionVariables.set(\"createdPassId\", json.data.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. GET Registration Pass by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/registrations/{{createdPassId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["registrations", "{{createdPassId}}"]
+            },
+            "description": "Retrieve specific pass details by ID."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Pass student details match\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.data.id).to.eql(pm.collectionVariables.get(\"createdPassId\"));",
+                  "    pm.expect(json.data.studentName).to.eql(\"Postman Test Student\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. PUT Update Registration Details",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"9876543299\",\n  \"year\": \"4th Year\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/registrations/{{createdPassId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["registrations", "{{createdPassId}}"]
+            },
+            "description": "Updates student contact details on an existing pass."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Updated field values reflected\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.data.phone).to.eql(\"9876543299\");",
+                  "    pm.expect(json.data.year).to.eql(\"4th Year\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "5. DELETE Cancel Registration Pass (Release Seat)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/registrations/{{createdPassId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["registrations", "{{createdPassId}}"]
+            },
+            "description": "Cancels pass and decrements event registered count in MongoDB."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Seat release message confirmed\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.success).to.be.true;",
+                  "    pm.expect(json.message).to.include(\"Seat released\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "6. Negative Test: Invalid Email Validation (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Invalid Student\",\n  \"email\": \"not-a-valid-email\",\n  \"phone\": \"12345\",\n  \"studentId\": \"STU01\",\n  \"eventId\": \"EVT-1001\",\n  \"department\": \"Engineering\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/registrations",
+              "host": ["{{baseUrl}}"],
+              "path": ["registrations"]
+            },
+            "description": "Verifies validation failure for bad email and phone formats."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 Bad Request\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Flags email validation error\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.field).to.eql(\"email\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04. Aggregation & Statistics (Practical 7)",
+      "item": [
+        {
+          "name": "1. GET Live Statistics (MongoDB Aggregation Pipeline)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/statistics",
+              "host": ["{{baseUrl}}"],
+              "path": ["statistics"]
+            },
+            "description": "Fetches dynamic statistics computed using MongoDB $group aggregation pipeline."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Contains real-time aggregated metrics\", function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.data).to.have.property(\"totalEvents\");",
+                  "    pm.expect(json.data).to.have.property(\"totalCapacity\");",
+                  "    pm.expect(json.data).to.have.property(\"totalRegistrations\");",
+                  "    pm.expect(json.data).to.have.property(\"availableSeats\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function EventCard({ event, onOpenModal, onSelectEvent }) {
+export default function EventCard({ event, onOpenModal, onSelectEvent, onEditEvent, onDeleteEvent }) {
   const dateObj = new Date(event.date + "T00:00:00");
   const day = String(dateObj.getDate()).padStart(2, '0');
   const month = dateObj.toLocaleString('en-US', { month: 'short' }).toUpperCase();
@@ -24,7 +24,35 @@ export default function EventCard({ event, onOpenModal, onSelectEvent }) {
               <span className="month">{month}</span>
             </div>
             <div className="text-end">
-              <span className="cc-tag cc-tag-teal mb-1">{event.category}</span>
+              <div className="d-flex align-items-center justify-content-end gap-1 mb-1">
+                <span className="cc-tag cc-tag-teal">{event.category}</span>
+                {onEditEvent && (
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-link text-secondary p-0 px-1"
+                    title="Edit Event (PUT)"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEditEvent(event);
+                    }}
+                  >
+                    <i className="bi bi-pencil-square" style={{ fontSize: '0.95rem' }}></i>
+                  </button>
+                )}
+                {onDeleteEvent && (
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-link text-danger p-0 px-1"
+                    title="Delete Event (DELETE)"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteEvent(event);
+                    }}
+                  >
+                    <i className="bi bi-trash3" style={{ fontSize: '0.95rem' }}></i>
+                  </button>
+                )}
+              </div>
               <div><span className={`cc-tag ${statusBadgeClass}`}>{statusText}</span></div>
             </div>
           </div>

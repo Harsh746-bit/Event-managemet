@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Navbar({ activePassCount }) {
+export default function Navbar({ activePassCount, dbConnected }) {
   return (
     <nav className="navbar navbar-expand-lg cc-navbar sticky-top">
       <div className="container">
@@ -46,6 +46,11 @@ export default function Navbar({ activePassCount }) {
             </li>
           </ul>
           <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+            {dbConnected && (
+              <span className="badge bg-success-subtle text-success border border-success-subtle d-none d-xl-inline-block py-2 px-2" title="MongoDB Connection Active">
+                <i className="bi bi-database-check me-1"></i> MongoDB Live
+              </span>
+            )}
             <a href="#register" className="btn btn-cc-outline"><i className="bi bi-pencil-square"></i> Register</a>
             <a href="#events" className="btn btn-cc-teal"><i className="bi bi-compass"></i> Explore Events</a>
           </div>

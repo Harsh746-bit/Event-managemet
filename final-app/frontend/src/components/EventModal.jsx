@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function EventModal({ event, onClose, onRegister }) {
+export default function EventModal({ event, onClose, onRegister, onEdit, onDelete }) {
   if (!event) return null;
 
   const availableSeats = event.capacity - event.registered;
@@ -18,7 +18,10 @@ export default function EventModal({ event, onClose, onRegister }) {
         </div>
 
         <div className="modal-body-custom p-4">
-          <h3 className="fw-bold mb-2">{event.title}</h3>
+          <div className="d-flex justify-content-between align-items-start">
+            <h3 className="fw-bold mb-2">{event.title}</h3>
+            <span className="badge bg-light text-dark border px-2 py-1 small">{event.id}</span>
+          </div>
           <p className="text-secondary mb-4">{event.description}</p>
 
           <div className="row g-3 mb-4">
@@ -49,21 +52,54 @@ export default function EventModal({ event, onClose, onRegister }) {
               </div>
             </div>
           </div>
+
+          <div className="p-2 bg-light rounded border text-muted small d-flex justify-content-between">
+            <span><strong>Department:</strong> {event.department}</span>
+            <span><strong>Status:</strong> {event.status}</span>
+          </div>
         </div>
 
-        <div className="modal-footer-custom p-3 bg-light border-top d-flex justify-content-end gap-2">
-          <button type="button" className="btn btn-cc-outline" onClick={onClose}>Close</button>
-          <button
-            type="button"
-            className="btn btn-cc-teal"
-            disabled={isFull}
-            onClick={() => {
-              onClose();
-              onRegister(event.id);
-            }}
-          >
-            {isFull ? "Registration Full" : "Register Now"}
-          </button>
+        <div className="modal-footer-custom p-3 bg-light border-top d-flex justify-content-between align-items-center">
+          <div className="d-flex gap-2">
+            {onEdit && (
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => {
+                  onClose();
+                  onEdit(event);
+                }}
+              >
+                <i className="bi bi-pencil me-1"></i> Edit
+              </button>
+            )}
+            {onDelete && (
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-danger"
+                onClick={() => {
+                  onClose();
+                  onDelete(event);
+                }}
+              >
+                <i className="bi bi-trash3 me-1"></i> Delete
+              </button>
+            )}
+          </div>
+          <div className="d-flex gap-2">
+            <button type="button" className="btn btn-cc-outline" onClick={onClose}>Close</button>
+            <button
+              type="button"
+              className="btn btn-cc-teal"
+              disabled={isFull}
+              onClick={() => {
+                onClose();
+                onRegister(event.id);
+              }}
+            >
+              {isFull ? "Registration Full" : "Register Now"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
