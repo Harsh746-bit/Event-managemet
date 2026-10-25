@@ -40,6 +40,20 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root Route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'CampusConnect Backend API is running!',
+    endpoints: [
+      '/api/health',
+      '/api/events',
+      '/api/registrations',
+      '/api/statistics'
+    ]
+  });
+});
+
 // API Routes
 app.use('/api/events', eventRoutes);
 app.use('/api/registrations', registrationRoutes);
