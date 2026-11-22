@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function FeaturedEvents({ onOpenModal, onSelectEvent }) {
   return (
@@ -11,7 +12,9 @@ export default function FeaturedEvents({ onOpenModal, onSelectEvent }) {
             <p className="cc-section-sub mb-0">A selection of flagship experiences and high-impact workshops worth showing up for.</p>
           </div>
           <div className="col-md-4 text-md-end mt-3 mt-md-0">
-            <a href="#events" className="btn btn-cc-outline">View All Events <i className="bi bi-arrow-right ms-1"></i></a>
+            <Link to="/events" className="btn btn-cc-outline">
+              View All Events <i className="bi bi-arrow-right ms-1"></i>
+            </Link>
           </div>
         </div>
 

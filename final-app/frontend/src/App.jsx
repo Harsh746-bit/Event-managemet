@@ -1,348 +1,111 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import FeaturedEvents from './components/FeaturedEvents';
-import EventCategories from './components/EventCategories';
-import HowItWorks from './components/HowItWorks';
-import EventDashboard from './components/EventDashboard';
-import ClubSection from './components/ClubSection';
-import AnnouncementList from './components/AnnouncementList';
-import RegistrationForm from './components/RegistrationForm';
-import RegistrationCard from './components/RegistrationCard';
-import EventModal from './components/EventModal';
-import ConfirmationModal from './components/ConfirmationModal';
-import CancelConfirmationModal from './components/CancelConfirmationModal';
-import EventFormModal from './components/EventFormModal';
-import DeleteEventModal from './components/DeleteEventModal';
-import ToastAlert from './components/ToastAlert';
-import Footer from './components/Footer';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { EventProvider } from './context/EventContext';
+import AppLayout from './components/AppLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 
-import { apiService } from './services/api';
-import { initialClubs, initialAnnouncements } from './data/staticContent';
+// Public & Shared Pages
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import UnauthorizedPage from './pages/UnauthorizedPage';
+import NotFoundPage from './pages/NotFoundPage';
+
+// Student (User) Pages
+import EventsPage from './pages/student/EventsPage';
+import RegistrationPage from './pages/student/RegistrationPage';
+import MyPassesPage from './pages/student/MyPassesPage';
+import ClubsPage from './pages/student/ClubsPage';
+import AnnouncementsPage from './pages/student/AnnouncementsPage';
+
+// Admin Pages
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import AdminEventsPage from './pages/admin/AdminEventsPage';
+import AdminRegistrationsPage from './pages/admin/AdminRegistrationsPage';
+
+// Organizer Pages
+import OrganizerDashboardPage from './pages/organizer/OrganizerDashboardPage';
 
 export default function App() {
-  const [events, setEvents] = useState([]);
-  const [registrations, setRegistrations] = useState([]);
-  const [statistics, setStatistics] = useState(null);
-  const [clubs] = useState(initialClubs);
-  const [announcements] = useState(initialAnnouncements);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [dbConnected, setDbConnected] = useState(false);
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [selectedEventId, setSelectedEventId] = useState('');
-
-  // Modals & Feedback State
-  const [activeModalEventId, setActiveModalEventId] = useState(null);
-  const [confirmedRegistration, setConfirmedRegistration] = useState(null);
-  const [registrationToCancel, setRegistrationToCancel] = useState(null);
-  
-  // Event CRUD Modals State
-  const [isEventFormOpen, setIsEventFormOpen] = useState(false);
-  const [eventToEdit, setEventToEdit] = useState(null);
-  const [eventToDelete, setEventToDelete] = useState(null);
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isCancelling, setIsCancelling] = useState(false);
-  const [serverError, setServerError] = useState(null);
-  const [toast, setToast] = useState(null);
-
-  // Fetch Events from API
-  const loadEvents = useCallback(async (cat, search) => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const data = await apiService.getEvents(cat, search);
-      setEvents(data);
-    } catch (err) {
-      setError(err.message || 'Failed to communicate with campus backend server.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  // Fetch Registrations, Stats & Health from API
-  const loadRegistrationsAndStats = useCallback(async () => {
-    try {
-      const [regs, stats, health] = await Promise.allSettled([
-        apiService.getRegistrations(),
-        apiService.getStatistics(),
-        apiService.getHealth()
-      ]);
-
-      if (regs.status === 'fulfilled') setRegistrations(regs.value);
-      if (stats.status === 'fulfilled') setStatistics(stats.value);
-      if (health.status === 'fulfilled' && health.value?.database?.status === 'connected') {
-        setDbConnected(true);
-      } else {
-        setDbConnected(false);
-      }
-    } catch (err) {
-      console.warn('Could not fetch registrations/statistics:', err.message);
-    }
-  }, []);
-
-  // Initial Load
-  useEffect(() => {
-    loadEvents(activeCategory, searchQuery);
-    loadRegistrationsAndStats();
-  }, [loadEvents, loadRegistrationsAndStats, activeCategory, searchQuery]);
-
-  const handleCategoryChange = (cat) => {
-    setActiveCategory(cat);
-  };
-
-  const handleSearchChange = (query) => {
-    setSearchQuery(query);
-  };
-
-  const handleResetFilters = () => {
-    setActiveCategory('All');
-    setSearchQuery('');
-  };
-
-  const handleSelectEventForRegistration = (eventId) => {
-    setSelectedEventId(eventId);
-    const regSection = document.getElementById('register');
-    if (regSection) {
-      regSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  // Event CRUD Triggers
-  const handleOpenCreateEvent = () => {
-    setEventToEdit(null);
-    setIsEventFormOpen(true);
-  };
-
-  const handleOpenEditEvent = (evt) => {
-    setEventToEdit(evt);
-    setIsEventFormOpen(true);
-  };
-
-  const handleOpenDeleteEvent = (evt) => {
-    setEventToDelete(evt);
-  };
-
-  const handleEventSaved = (savedResult, isEdit) => {
-    setToast({
-      type: 'success',
-      title: isEdit ? 'Event Updated (PUT)' : 'Event Created (POST)',
-      message: isEdit
-        ? `"${savedResult.data?.title}" updated successfully in MongoDB.`
-        : `"${savedResult.data?.title}" created successfully with ID ${savedResult.data?.id}.`
-    });
-    loadEvents(activeCategory, searchQuery);
-    loadRegistrationsAndStats();
-  };
-
-  const handleEventDeleted = (deletedEvent) => {
-    setToast({
-      type: 'success',
-      title: 'Event Deleted (DELETE)',
-      message: `Event "${deletedEvent.title}" (${deletedEvent.id}) and linked passes deleted from MongoDB.`
-    });
-    loadEvents(activeCategory, searchQuery);
-    loadRegistrationsAndStats();
-  };
-
-  // Create Registration Handler
-  const handleRegisterSubmit = async (formData) => {
-    setIsSubmitting(true);
-    setServerError(null);
-
-    try {
-      const newRegistration = await apiService.createRegistration(formData);
-      
-      // Update local state and refresh
-      setConfirmedRegistration(newRegistration);
-      setToast({
-        type: 'success',
-        title: 'Registration Confirmed (POST)',
-        message: `Pass ID ${newRegistration.id} generated for ${newRegistration.eventTitle}.`
-      });
-
-      // Reload fresh data from backend
-      loadEvents(activeCategory, searchQuery);
-      loadRegistrationsAndStats();
-      return true;
-    } catch (err) {
-      setServerError(err.message || 'Registration failed. Please verify your details.');
-      setToast({
-        type: 'error',
-        title: 'Registration Error',
-        message: err.message
-      });
-      return false;
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Cancel Registration Handler
-  const handleConfirmCancel = async () => {
-    if (!registrationToCancel) return;
-    setIsCancelling(true);
-
-    try {
-      await apiService.cancelRegistration(registrationToCancel.id);
-      setToast({
-        type: 'success',
-        title: 'Pass Cancelled (DELETE)',
-        message: `Event pass ${registrationToCancel.id} cancelled. Seat released back to MongoDB.`
-      });
-      setRegistrationToCancel(null);
-
-      // Reload data
-      loadEvents(activeCategory, searchQuery);
-      loadRegistrationsAndStats();
-    } catch (err) {
-      setToast({
-        type: 'error',
-        title: 'Cancellation Error',
-        message: err.message
-      });
-    } finally {
-      setIsCancelling(false);
-    }
-  };
-
-  const activeEventForModal = events.find(e => (e.id === activeModalEventId || e._id === activeModalEventId));
-
   return (
-    <div>
-      <Navbar activePassCount={registrations.length} dbConnected={dbConnected} />
+    <AuthProvider>
+      <EventProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
+              {/* Public Routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-      <Hero onOpenModal={(id) => setActiveModalEventId(id)} />
+              {/* Public Exploration Routes */}
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/clubs" element={<ClubsPage />} />
+              <Route path="/announcements" element={<AnnouncementsPage />} />
 
-      <FeaturedEvents
-        onOpenModal={(id) => setActiveModalEventId(id)}
-        onSelectEvent={handleSelectEventForRegistration}
-      />
+              {/* Authenticated Pass & Registration Routes */}
+              <Route
+                path="/register"
+                element={
+                  <ProtectedRoute allowedRoles={['student', 'organizer', 'admin']}>
+                    <RegistrationPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-passes"
+                element={
+                  <ProtectedRoute allowedRoles={['student', 'organizer', 'admin']}>
+                    <MyPassesPage />
+                  </ProtectedRoute>
+                }
+              />
 
-      <EventCategories
-        activeCategory={activeCategory}
-        onSelectCategory={handleCategoryChange}
-      />
+              {/* Organizer-Protected Routes */}
+              <Route
+                path="/organizer/dashboard"
+                element={
+                  <ProtectedRoute allowedRoles={['organizer', 'admin']}>
+                    <OrganizerDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/organizer" element={<Navigate to="/organizer/dashboard" replace />} />
 
-      <HowItWorks />
+              {/* Admin-Protected Routes (RBAC Enforcement) */}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AdminDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/events"
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AdminEventsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/registrations"
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AdminRegistrationsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/admin/system" element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
 
-      <EventDashboard
-        statistics={statistics}
-        events={events}
-        isLoading={isLoading}
-        error={error}
-        searchQuery={searchQuery}
-        onSearchChange={handleSearchChange}
-        activeCategory={activeCategory}
-        onCategoryChange={handleCategoryChange}
-        onResetFilters={handleResetFilters}
-        onOpenModal={(id) => setActiveModalEventId(id)}
-        onSelectEvent={handleSelectEventForRegistration}
-        onCreateEvent={handleOpenCreateEvent}
-        onEditEvent={handleOpenEditEvent}
-        onDeleteEvent={handleOpenDeleteEvent}
-        onRetry={() => {
-          loadEvents(activeCategory, searchQuery);
-          loadRegistrationsAndStats();
-        }}
-      />
-
-      <ClubSection clubs={clubs} />
-
-      <AnnouncementList announcements={announcements} />
-
-      <RegistrationForm
-        events={events}
-        selectedEventId={selectedEventId}
-        onRegisterSubmit={handleRegisterSubmit}
-        isSubmitting={isSubmitting}
-        serverError={serverError}
-      />
-
-      {/* MY REGISTRATIONS TIMELINE */}
-      <section className="cc-section" id="my-registrations">
-        <div className="container">
-          <div className="row mb-4 align-items-end">
-            <div className="col-md-8">
-              <div className="cc-eyebrow">Student Portal</div>
-              <h2 className="cc-section-title">MY REGISTRATIONS</h2>
-              <p className="cc-section-sub mb-0">Manage active event passes, verify QR barcodes, and release seats.</p>
-            </div>
-            <div className="col-md-4 text-md-end mt-3 mt-md-0">
-              <span className="badge bg-light text-dark border p-2">
-                <i className="bi bi-ticket-fill me-1" style={{ color: 'var(--cc-teal-primary)' }}></i>
-                {registrations.length} Active Passes
-              </span>
-            </div>
-          </div>
-
-          {registrations.length === 0 ? (
-            <div className="p-4 text-center bg-white border rounded">
-              <i className="bi bi-ticket-perforated fs-1 text-muted"></i>
-              <h6 className="fw-bold mt-2 mb-1">No Active Registrations Found</h6>
-              <p className="small text-muted mb-3">You haven't registered for any events yet.</p>
-              <a href="#events" className="btn btn-sm btn-cc-teal">Explore Events</a>
-            </div>
-          ) : (
-            <div>
-              {registrations.map(reg => (
-                <RegistrationCard
-                  key={reg.id || reg._id}
-                  registration={reg}
-                  onCancelClick={(item) => setRegistrationToCancel(item)}
-                  onViewPass={(item) => setConfirmedRegistration(item)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      <Footer />
-
-      {/* MODALS & NOTIFICATIONS */}
-      <EventModal
-        event={activeEventForModal}
-        onClose={() => setActiveModalEventId(null)}
-        onRegister={handleSelectEventForRegistration}
-        onEdit={handleOpenEditEvent}
-        onDelete={handleOpenDeleteEvent}
-      />
-
-      <EventFormModal
-        isOpen={isEventFormOpen}
-        event={eventToEdit}
-        onClose={() => setIsEventFormOpen(false)}
-        onSaved={handleEventSaved}
-      />
-
-      <DeleteEventModal
-        isOpen={Boolean(eventToDelete)}
-        event={eventToDelete}
-        onClose={() => setEventToDelete(null)}
-        onDeleted={handleEventDeleted}
-      />
-
-      <ConfirmationModal
-        registration={confirmedRegistration}
-        onClose={() => setConfirmedRegistration(null)}
-      />
-
-      <CancelConfirmationModal
-        registration={registrationToCancel}
-        onConfirm={handleConfirmCancel}
-        onCancel={() => setRegistrationToCancel(null)}
-        isCancelling={isCancelling}
-      />
-
-      <ToastAlert
-        toast={toast}
-        onClose={() => setToast(null)}
-      />
-    </div>
+              {/* Fallback 404 Route */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </EventProvider>
+    </AuthProvider>
   );
 }

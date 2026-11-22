@@ -13,7 +13,7 @@ const connectDB = async () => {
 
   try {
     const conn = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000,
     });
 
     console.log(`[MongoDB] Connected successfully to host: ${conn.connection.host}`);
@@ -22,8 +22,20 @@ const connectDB = async () => {
 
     return conn;
   } catch (err) {
-    console.error(`[MongoDB] Connection Error: ${err.message}`);
-    // In production or when DB is mandatory, we log warning; we don't crash blindly
+    console.error(`[MongoDB] Primary connection failed: ${err.message}`);
+    // If primary failed and it wasn't local, attempt fallback to local MongoDB
+    if (uri !== 'mongodb://127.0.0.1:27017/campusconnect') {
+      try {
+        console.log('[MongoDB] Attempting fallback to local MongoDB: mongodb://127.0.0.1:27017/campusconnect');
+        const fallbackConn = await mongoose.connect('mongodb://127.0.0.1:27017/campusconnect', {
+          serverSelectionTimeoutMS: 3000,
+        });
+        console.log(`[MongoDB] Fallback connected to: ${fallbackConn.connection.host}`);
+        return fallbackConn;
+      } catch (fallbackErr) {
+        console.error(`[MongoDB] Fallback also failed: ${fallbackErr.message}`);
+      }
+    }
     throw err;
   }
 };

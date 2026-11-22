@@ -5,7 +5,7 @@
  * Practical 7: MongoDB Persistence
  */
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const apiService = {
   // GET /api/events - Retrieve all events with optional filters

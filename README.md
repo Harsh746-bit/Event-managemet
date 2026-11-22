@@ -61,6 +61,22 @@ npm run dev
 
 ---
 
+## 🗺️ Multi-Page Routing & Role-Based Access Control (RBAC)
+
+The application features full multi-page architecture powered by `react-router-dom` with strict route protection, authentication state, and role bifurcation:
+
+| Role | Permitted Routes | Description |
+| :--- | :--- | :--- |
+| **Public / Guest** | `/`, `/login`, `/events`, `/clubs`, `/announcements` | Landing page, event directory, club showcase, notice board, and role selection portal. |
+| **Student (User)** | `/events`, `/register`, `/my-passes`, `/clubs`, `/announcements` | Event browsing, direct seat reservation form, digital pass wallet with QR barcodes, and cancellation/seat-release. |
+| **Campus Admin** | `/admin/dashboard`, `/admin/events`, `/admin/registrations`, `/admin/system` | Executive KPI analytics, Event CRUD studio (`POST`, `PUT`, `DELETE`), attendee & pass roster with revocation, and MongoDB diagnostic status. |
+
+### Route Protection & Security
+- **Route Guard (`<ProtectedRoute>`)**: Verifies active session and role claims. Unauthorized attempts to view `/admin/*` routes redirect to a dedicated 403 Access Denied view (`/unauthorized`) or prompt for authentication.
+- **Role Switcher**: Persistent in `localStorage` with a 1-click quick-switcher in the navigation header to switch between Administrator and Student personas.
+
+---
+
 ## 📡 RESTful API Specification (Practical 6 & 7)
 
 | Method | Endpoint | Description | Status Codes | Request Body / Query Params |
