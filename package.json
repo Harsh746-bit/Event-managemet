@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "Smart Campus Engagement & Event Management Platform with RBAC",
   "scripts": {
-    "install:all": "npm --prefix final-app/backend install && npm --prefix final-app/frontend install",
-    "build": "npm --prefix final-app/frontend install && npm --prefix final-app/frontend run build && npm --prefix final-app/backend install",
+    "build": "npm --prefix final-app/frontend install --include=dev && npm --prefix final-app/frontend run build && npm --prefix final-app/backend install",
     "seed": "npm --prefix final-app/backend run seed",
     "start": "npm --prefix final-app/backend start"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^18.0.9",
+    "express": "^4.21.2",
+    "mongoose": "^9.11.4"
   }
 }
