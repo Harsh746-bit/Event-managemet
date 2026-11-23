@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { apiService } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -99,6 +100,40 @@ export function AuthProvider({ children }) {
     return INITIAL_STUDENTS;
   });
 
+  // Load registered users from MongoDB Atlas on initial load
+  useEffect(() => {
+    const fetchCloudUsers = async () => {
+      try {
+        const cloudUsers = await apiService.getUsers();
+        if (cloudUsers && cloudUsers.length > 0) {
+          const cloudOrganizers = cloudUsers.filter(u => u.role === 'organizer');
+          const cloudStudents = cloudUsers.filter(u => u.role === 'student');
+
+          if (cloudOrganizers.length > 0) {
+            setOrganizers(prev => {
+              const map = new Map();
+              prev.forEach(o => map.set(o.email.toLowerCase(), o));
+              cloudOrganizers.forEach(o => map.set(o.email.toLowerCase(), o));
+              return Array.from(map.values());
+            });
+          }
+
+          if (cloudStudents.length > 0) {
+            setStudents(prev => {
+              const map = new Map();
+              prev.forEach(s => map.set(s.email.toLowerCase(), s));
+              cloudStudents.forEach(s => map.set(s.email.toLowerCase(), s));
+              return Array.from(map.values());
+            });
+          }
+        }
+      } catch (err) {
+        console.warn('Could not sync users from MongoDB Atlas:', err.message);
+      }
+    };
+    fetchCloudUsers();
+  }, []);
+
   // Persist state
   useEffect(() => {
     try {
@@ -195,10 +230,17 @@ export function AuthProvider({ children }) {
       department: studentData.department || 'Computer Science',
       year: studentData.year || '3rd Year',
       role: 'student',
+      status: 'active',
       avatar: (studentData.name || 'ST').slice(0, 2).toUpperCase()
     };
     setStudents(prev => [...prev, newStudent]);
     setUser(newStudent);
+
+    // Save to MongoDB Atlas
+    apiService.createUser(newStudent).catch(err => {
+      console.warn('Failed to persist student to MongoDB:', err.message);
+    });
+
     return newStudent;
   };
 
@@ -224,6 +266,12 @@ export function AuthProvider({ children }) {
     };
 
     setOrganizers(prev => [...prev, newOrganizer]);
+
+    // Save to MongoDB Atlas
+    apiService.createUser(newOrganizer).catch(err => {
+      console.warn('Failed to persist organizer to MongoDB:', err.message);
+    });
+
     return newOrganizer;
   };
 
@@ -232,6 +280,10 @@ export function AuthProvider({ children }) {
     setOrganizers(prev =>
       prev.map(o => (o.id === organizerId ? { ...o, status: 'approved' } : o))
     );
+    // Update in MongoDB Atlas
+    apiService.updateUserStatus(organizerId, 'approved').catch(err => {
+      console.warn('Failed to update organizer approval in MongoDB:', err.message);
+    });
   };
 
   // Admin rejects an organizer
@@ -239,6 +291,10 @@ export function AuthProvider({ children }) {
     setOrganizers(prev =>
       prev.map(o => (o.id === organizerId ? { ...o, status: 'rejected' } : o))
     );
+    // Update in MongoDB Atlas
+    apiService.updateUserStatus(organizerId, 'rejected').catch(err => {
+      console.warn('Failed to update organizer rejection in MongoDB:', err.message);
+    });
   };
 
   // Quick switch role for testing

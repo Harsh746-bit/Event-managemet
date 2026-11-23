@@ -157,6 +157,41 @@ export const apiService = {
     return data.data;
   },
 
+  // GET /api/users - Retrieve all users from MongoDB
+  async getUsers(role = '', status = '') {
+    const params = new URLSearchParams();
+    if (role) params.append('role', role);
+    if (status) params.append('status', status);
+    const res = await fetch(`${BASE_URL}/users${params.toString() ? '?' + params.toString() : ''}`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.data || [];
+  },
+
+  // POST /api/users - Save new user (student or organizer) to MongoDB
+  async createUser(payload) {
+    const res = await fetch(`${BASE_URL}/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to create user');
+    return data.data;
+  },
+
+  // PUT /api/users/:id/status - Approve or reject organizer in MongoDB
+  async updateUserStatus(id, status) {
+    const res = await fetch(`${BASE_URL}/users/${id}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to update user status');
+    return data.data;
+  },
+
   // GET /api/health - Diagnostic check on backend & MongoDB
   async getHealth() {
     const res = await fetch(`${BASE_URL}/health`);

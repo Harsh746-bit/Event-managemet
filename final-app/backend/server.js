@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 const eventRoutes = require('./routes/eventRoutes');
 const registrationRoutes = require('./routes/registrationRoutes');
+const userRoutes = require('./routes/userRoutes');
 const { getStatistics } = require('./controllers/eventController');
 const { notFoundHandler, globalErrorHandler } = require('./middleware/errorHandler');
 
@@ -62,6 +63,7 @@ app.get('/api', (req, res) => {
 // API Routes
 app.use('/api/events', eventRoutes);
 app.use('/api/registrations', registrationRoutes);
+app.use('/api/users', userRoutes);
 app.get('/api/statistics', getStatistics);
 
 // Health Check & Database Diagnostic Endpoint
