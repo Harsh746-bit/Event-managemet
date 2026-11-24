@@ -45,17 +45,43 @@ app.use((req, res, next) => {
 const path = require('path');
 const fs = require('fs');
 const frontendDist = path.join(__dirname, '../frontend/dist');
+const apiDocsHtml = path.join(__dirname, 'public/api-docs.html');
+const vanillaDir = path.join(__dirname, '../../practical-02-javascript');
 
-// API Root Info Route
+// Serve Vanilla JS Practical 2 if requested
+if (fs.existsSync(vanillaDir)) {
+  app.use('/vanilla', express.static(vanillaDir));
+}
+
+// Interactive REST API Explorer (Practical 6 & 7 Live Tester)
+app.get('/api/docs', (req, res) => {
+  if (fs.existsSync(apiDocsHtml)) {
+    return res.sendFile(apiDocsHtml);
+  }
+  res.redirect('/api');
+});
+
+// API Root Info Route (Serves Interactive Explorer in browser, or JSON for API calls)
 app.get('/api', (req, res) => {
+  if (req.headers.accept && req.headers.accept.includes('text/html') && fs.existsSync(apiDocsHtml)) {
+    return res.sendFile(apiDocsHtml);
+  }
   res.status(200).json({
     success: true,
     message: 'CampusConnect Backend API is running!',
+    docs: '/api/docs',
     endpoints: [
-      '/api/health',
-      '/api/events',
-      '/api/registrations',
-      '/api/statistics'
+      { method: 'GET', path: '/api/events' },
+      { method: 'POST', path: '/api/events' },
+      { method: 'PUT', path: '/api/events/:id' },
+      { method: 'DELETE', path: '/api/events/:id' },
+      { method: 'GET', path: '/api/registrations' },
+      { method: 'POST', path: '/api/registrations' },
+      { method: 'DELETE', path: '/api/registrations/:id' },
+      { method: 'GET', path: '/api/users' },
+      { method: 'POST', path: '/api/users' },
+      { method: 'GET', path: '/api/health' },
+      { method: 'GET', path: '/api/statistics' }
     ]
   });
 });

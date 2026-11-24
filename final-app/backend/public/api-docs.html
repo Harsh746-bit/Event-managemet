@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusConnect REST API Explorer & Live Tester</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --cc-dark: #0f172a;
+      --cc-surface: #1e293b;
+      --cc-border: #334155;
+      --cc-teal: #0d9488;
+      --cc-teal-hover: #0f766e;
+    }
+    body {
+      background-color: var(--cc-dark);
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    .endpoint-card {
+      background-color: var(--cc-surface);
+      border: 1px solid var(--cc-border);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      transition: all 0.2s ease;
+    }
+    .endpoint-card:hover {
+      border-color: #475569;
+    }
+    .badge-get { background-color: #2563eb; color: white; }
+    .badge-post { background-color: #16a34a; color: white; }
+    .badge-put { background-color: #d97706; color: white; }
+    .badge-delete { background-color: #dc2626; color: white; }
+    pre code {
+      color: #38bdf8;
+      font-size: 0.85rem;
+    }
+    .payload-area {
+      background-color: #0b1120;
+      color: #a5f3fc;
+      border: 1px solid #334155;
+      font-family: monospace;
+      font-size: 0.82rem;
+      border-radius: 6px;
+      width: 100%;
+    }
+    .response-window {
+      background-color: #0b1120;
+      border: 1px solid var(--cc-border);
+      border-radius: 10px;
+      position: sticky;
+      top: 1.5rem;
+      max-height: calc(100vh - 3rem);
+      display: flex;
+      flex-direction: column;
+    }
+    .response-body {
+      overflow-y: auto;
+      max-height: 520px;
+      background: #060913;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="py-4">
+  <div class="container-fluid px-lg-5">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-4 border-bottom border-secondary">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <span class="badge bg-teal" style="background-color: var(--cc-teal);">Practical 6 & 7</span>
+          <span class="text-secondary small">RESTful CRUD Operations & MongoDB Atlas Persistence</span>
+        </div>
+        <h2 class="fw-bold mb-0 text-white">CampusConnect Live API Explorer</h2>
+        <p class="text-secondary mb-0 small">Execute live GET, POST, PUT, and DELETE HTTP requests directly against your cloud database.</p>
+      </div>
+      <div class="d-flex gap-2 mt-3 mt-md-0">
+        <a href="/" class="btn btn-outline-light btn-sm"><i class="bi bi-globe me-1"></i> Open Frontend App</a>
+        <a href="/api/health" target="_blank" class="btn btn-outline-info btn-sm"><i class="bi bi-heart-pulse me-1"></i> Health JSON</a>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Left Column: Endpoints Catalog -->
+      <div class="col-lg-7">
+        
+        <!-- SECTION 1: EVENTS -->
+        <h5 class="text-white fw-bold mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-calendar-event text-info"></i> Events REST Endpoints
+        </h5>
+
+        <!-- 1. GET /api/events -->
+        <div class="endpoint-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge badge-get px-2 py-1 fw-bold">GET</span>
+              <span class="font-monospace text-light fw-bold">/api/events</span>
+            </div>
+            <button class="btn btn-primary btn-sm px-3" onclick="sendRequest('GET', '/api/events')">
+              <i class="bi bi-play-fill me-1"></i> Send GET
+            </button>
+          </div>
+          <div class="small text-secondary">Fetch all campus events from MongoDB Atlas with capacity, registered seats, and dates.</div>
+        </div>
+
+        <!-- 2. POST /api/events -->
+        <div class="endpoint-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge badge-post px-2 py-1 fw-bold">POST</span>
+              <span class="font-monospace text-light fw-bold">/api/events</span>
+            </div>
+            <button class="btn btn-success btn-sm px-3" onclick="sendRequest('POST', '/api/events', 'postEventPayload')">
+              <i class="bi bi-send-fill me-1"></i> Send POST (Create)
+            </button>
+          </div>
+          <div class="small text-secondary mb-2">Create a new campus event and save it directly into MongoDB Atlas.</div>
+          <textarea id="postEventPayload" class="payload-area p-2" rows="5">{
+  "title": "AI & Web Summit 2026",
+  "category": "Technology",
+  "date": "2026-11-28",
+  "time": "10:30 AM",
+  "location": "Auditorium Hall B",
+  "capacity": 75,
+  "department": "Computer Science & Engineering",
+  "description": "Live external seminar on modern generative AI, agentic systems, and cloud deployments."
+}</textarea>
+        </div>
+
+        <!-- 3. PUT /api/events/:id -->
+        <div class="endpoint-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge badge-put px-2 py-1 fw-bold">PUT</span>
+              <span class="font-monospace text-light fw-bold">/api/events/EVT-1001</span>
+            </div>
+            <button class="btn btn-warning btn-sm px-3 text-dark fw-semibold" onclick="sendRequest('PUT', '/api/events/EVT-1001', 'putEventPayload')">
+              <i class="bi bi-pencil-square me-1"></i> Send PUT (Update)
+            </button>
+          </div>
+          <div class="small text-secondary mb-2">Update an existing event's capacity, venue, or schedule in MongoDB.</div>
+          <textarea id="putEventPayload" class="payload-area p-2" rows="3">{
+  "capacity": 120,
+  "location": "Main Advanced Auditorium",
+  "description": "Updated venue to accommodate higher student demand."
+}</textarea>
+        </div>
+
+        <!-- SECTION 2: PASS BOOKING & REGISTRATIONS -->
+        <h5 class="text-white fw-bold mt-4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-ticket-perforated text-success"></i> Passes & Registrations Endpoints
+        </h5>
+
+        <!-- 4. GET /api/registrations -->
+        <div class="endpoint-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge badge-get px-2 py-1 fw-bold">GET</span>
+              <span class="font-monospace text-light fw-bold">/api/registrations</span>
+            </div>
+            <button class="btn btn-primary btn-sm px-3" onclick="sendRequest('GET', '/api/registrations')">
+              <i class="bi bi-play-fill me-1"></i> Send GET
+            </button>
+          </div>
+          <div class="small text-secondary">Fetch all active student event passes from MongoDB Atlas.</div>
+        </div>
+
+        <!-- 5. POST /api/registrations (BOOK PASS) -->
+        <div class="endpoint-card p-3 border-success">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge badge-post px-2 py-1 fw-bold">POST</span>
+              <span class="font-monospace text-light fw-bold">/api/registrations</span>
+              <span class="badge bg-success-subtle text-success small">Seat Reservation</span>
+            </div>
+            <button class="btn btn-success btn-sm px-3" onclick="sendRequest('POST', '/api/registrations', 'postRegPayload')">
+              <i class="bi bi-ticket-fill me-1"></i> Send POST (Book Pass)
+            </button>
+          </div>
+          <div class="small text-secondary mb-2">Book a student ticket, decrement event seat quota, and generate pass in MongoDB.</div>
+          <textarea id="postRegPayload" class="payload-area p-2" rows="5">{
+  "eventId": "EVT-1001",
+  "studentName": "Viva Student Demo",
+  "email": "student.demo@campusconnect.edu",
+  "phone": "9876543210",
+  "studentId": "202401100099",
+  "department": "Computer Science",
+  "year": "3rd Year"
+}</textarea>
+        </div>
+
+        <!-- SECTION 3: USERS & HEALTH -->
+        <h5 class="text-white fw-bold mt-4 mb-3 d-flex align-items-center gap-2">
+          <i class="bi bi-people text-warning"></i> Users & Diagnostics Endpoints
+        </h5>
+
+        <!-- 6. GET /api/users -->
+        <div class="endpoint-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge badge-get px-2 py-1 fw-bold">GET</span>
+              <span class="font-monospace text-light fw-bold">/api/users</span>
+            </div>
+            <button class="btn btn-primary btn-sm px-3" onclick="sendRequest('GET', '/api/users')">
+              <i class="bi bi-play-fill me-1"></i> Send GET
+            </button>
+          </div>
+          <div class="small text-secondary">List all users (Admin, Organizers, and Students) stored in MongoDB Atlas.</div>
+        </div>
+
+        <!-- 7. GET /api/health -->
+        <div class="endpoint-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge badge-get px-2 py-1 fw-bold">GET</span>
+              <span class="font-monospace text-light fw-bold">/api/health</span>
+            </div>
+            <button class="btn btn-info btn-sm px-3 text-dark fw-bold" onclick="sendRequest('GET', '/api/health')">
+              <i class="bi bi-activity me-1"></i> Health Check
+            </button>
+          </div>
+          <div class="small text-secondary">Check server uptime, database status ('connected'), and Atlas shard host.</div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Live Response Window -->
+      <div class="col-lg-5">
+        <div class="response-window p-3">
+          <div class="d-flex justify-content-between align-items-center pb-2 mb-2 border-bottom border-secondary">
+            <div class="d-flex align-items-center gap-2">
+              <span class="fw-bold text-white"><i class="bi bi-terminal me-1"></i> Live Response</span>
+              <span id="resBadge" class="badge bg-secondary">Ready</span>
+            </div>
+            <div id="resMeta" class="small text-muted">- ms</div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span id="reqUrl" class="font-monospace small text-info text-truncate">Click any 'Send' button to execute</span>
+            <button class="btn btn-sm btn-link text-secondary p-0 text-decoration-none" onclick="clearConsole()">Clear</button>
+          </div>
+          <div class="response-body flex-grow-1">
+            <pre id="resJson" class="mb-0"><code>// Real-time JSON from MongoDB Atlas will appear here...</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function sendRequest(method, endpoint, payloadId) {
+      const resBadge = document.getElementById('resBadge');
+      const resMeta = document.getElementById('resMeta');
+      const reqUrl = document.getElementById('reqUrl');
+      const resJson = document.getElementById('resJson');
+
+      resBadge.className = 'badge bg-warning text-dark';
+      resBadge.textContent = 'Sending...';
+      reqUrl.textContent = `${method} ${endpoint}`;
+
+      let bodyData = null;
+      if (payloadId) {
+        try {
+          bodyData = JSON.parse(document.getElementById(payloadId).value);
+        } catch (e) {
+          resBadge.className = 'badge bg-danger';
+          resBadge.textContent = 'Payload Error';
+          resJson.innerHTML = `<code>Invalid JSON in payload textarea:\n${e.message}</code>`;
+          return;
+        }
+      }
+
+      const startTime = performance.now();
+      try {
+        const options = {
+          method: method,
+          headers: { 'Content-Type': 'application/json' }
+        };
+        if (bodyData) options.body = JSON.stringify(bodyData);
+
+        const res = await fetch(endpoint, options);
+        const elapsed = Math.round(performance.now() - startTime);
+        const data = await res.json();
+
+        resBadge.className = res.ok ? 'badge bg-success' : 'badge bg-danger';
+        resBadge.textContent = `${res.status} ${res.statusText}`;
+        resMeta.textContent = `${elapsed} ms`;
+        resJson.innerHTML = `<code>${JSON.stringify(data, null, 2)}</code>`;
+      } catch (err) {
+        const elapsed = Math.round(performance.now() - startTime);
+        resBadge.className = 'badge bg-danger';
+        resBadge.textContent = 'Network Error';
+        resMeta.textContent = `${elapsed} ms`;
+        resJson.innerHTML = `<code>Error: ${err.message}</code>`;
+      }
+    }
+
+    function clearConsole() {
+      document.getElementById('resBadge').className = 'badge bg-secondary';
+      document.getElementById('resBadge').textContent = 'Ready';
+      document.getElementById('resMeta').textContent = '- ms';
+      document.getElementById('reqUrl').textContent = 'Waiting for execution...';
+      document.getElementById('resJson').innerHTML = '<code>// Console cleared</code>';
+    }
+  </script>
+</body>
+</html>
